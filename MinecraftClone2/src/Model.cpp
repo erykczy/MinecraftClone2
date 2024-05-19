@@ -1,0 +1,48 @@
+#pragma once
+#include "src/Model.h"
+#include <glad/glad.h>
+
+Model::Model() {
+	glGenVertexArrays(1, &m_vao);
+	glGenBuffers(1, &m_vbo);
+	glGenBuffers(1, &m_ebo);
+
+	glBindVertexArray(m_vao);
+
+	// indicies
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+
+	// vertex position
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+}
+
+Model::~Model() {
+	glDeleteVertexArrays(1, &m_vao);
+	glDeleteBuffers(1, &m_vbo);
+	glDeleteBuffers(1, &m_ebo);
+}
+
+void Model::setMesh(const Mesh& mesh)
+{
+	m_mesh = mesh;
+
+	// vertex position
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	glBufferData(GL_ARRAY_BUFFER, m_mesh.getSizeOfVertices(), m_mesh.vertices.data(), GL_DYNAMIC_DRAW);
+
+	// indicies
+	glBindBuffer(GL_ARRAY_BUFFER, m_ebo);
+	glBufferData(GL_ARRAY_BUFFER, m_mesh.getSizeOfIndicies(), m_mesh.indicies.data(), GL_DYNAMIC_DRAW);
+}
+
+void Model::render() {
+	if (!m_material) {
+		Debug::logger << "Material is nullptr!" << Debug::endError;
+		return;
+	}
+	m_material->use();
+	glBindVertexArray(m_vao);
+	glDrawElements(GL_TRIANGLES, m_mesh.indicies.size(), GL_UNSIGNED_INT, 0);
+}

@@ -18,6 +18,8 @@ Model::Model() {
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	updateModelMatrix();
 }
 
 Model::~Model() {

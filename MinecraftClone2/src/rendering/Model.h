@@ -30,7 +30,7 @@ private:
 	unsigned int m_vbo{};
 	unsigned int m_ebo{};
 	glm::vec3 m_position{};
-	glm::mat4 m_modelMatrix{ 1.0f };
+	glm::mat4 m_modelMatrix{};
 
 	void updateModelMatrix();
 

@@ -3,8 +3,6 @@
 #include "src/world/Chunk.h"
 #include "src/event/IChunkEventListener.h"
 #include "src/rendering/Material.h"
-#include "src/rendering/Mesh.h"
-#include "src/rendering/Model.h"
 #include <vector>
 
 class ChunkModel final : public IRenderable, private IChunkEventListener {
@@ -17,9 +15,33 @@ public:
 	void render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) override;
 
 private:
+	class Submodel final {
+	public:
+		std::vector<float> vertices{};
+		std::vector<unsigned int> indicies{};
+		unsigned int m_vao{};
+		unsigned int m_vbo{};
+		unsigned int m_ebo{};
+
+		Submodel();
+
+		void render(Material& material, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
+		void updateVao();
+
+		int getSizeOfVertices() {
+			static_assert(typeid(vertices) == typeid(std::vector<float>));
+			return static_cast<int>(sizeof(float) * vertices.size());
+		}
+
+		int getSizeOfIndicies() {
+			static_assert(typeid(indicies) == typeid(std::vector<unsigned int>));
+			return static_cast<int>(sizeof(int) * indicies.size());
+		}
+	};
+
 	Material& m_material;
 	Chunk& m_chunk;
-	std::vector<Model> m_submodels{};
+	std::vector<Submodel> m_submodels{};
 
 	void onBlockChanged(const glm::ivec3& pos) override {
 		generateSubmodels();
@@ -30,109 +52,106 @@ private:
 			m_submodels.resize(m_chunk.m_palette.size());
 		}
 
-		std::vector<Mesh> submeshes(m_submodels.size());
-
 		int chunkX{ m_chunk.getPosition().x };
 		int chunkZ{ m_chunk.getPosition().y };
 
 		for (int x{ 0 }; x < CHUNK_WIDTH; ++x) {
 			for (int z{ 0 }; z < CHUNK_WIDTH; ++z) {
 				for (int y{ 0 }; y < CHUNK_HEIGHT; ++y) {
-					addBlock(submeshes, chunkX + x, y, chunkZ + z);
+					addBlock(m_submodels[m_chunk.m_blocks[x][y][z]], chunkX + x, y, chunkZ + z);
 				}
 			}
 		}
 
 		for (int i{ 0 }; i < m_submodels.size(); ++i) {
-			m_submodels[i].setMesh(submeshes[i]);
+			m_submodels[i].updateVao();
 		}
 	}
 
-	void addBlock(std::vector<Mesh>& meshes, int worldX, int worldY, int worldZ) {
+	void addBlock(Submodel& submodel, int worldX, int worldY, int worldZ) {
 		short blockState{ m_chunk.m_blocks[worldX][worldY][worldZ] };
-		std::vector<float>& vertices{ meshes[blockState].vertices };
-		std::vector<unsigned int>& indicies{ meshes[blockState].indicies };
+		auto& vertices{ submodel.vertices };
+		auto& indicies{ submodel.indicies };
 
 		constexpr float m{ 0.5f };
 		addPlane(
-			vertices, indicies,
-			worldX - m, worldY -m, worldZ -m,
-			worldX +m, worldY -m, worldZ -m,
-			worldX +m, worldY +m, worldZ -m,
-			worldX -m, worldY +m, worldZ -m
+			submodel,
+			worldX - m, worldY - m, worldZ - m,
+			worldX + m, worldY - m, worldZ - m,
+			worldX + m, worldY + m, worldZ - m,
+			worldX - m, worldY + m, worldZ - m
 			); // front
 		addPlane(
-			vertices, indicies,
-			+m, -m, +m,
-			-m, -m, +m,
-			-m, +m, +m,
-			+m, +m, +m
-			); // back
+			submodel,
+			worldX + m, worldY - m, worldZ + m,
+			worldX - m, worldY - m, worldZ + m,
+			worldX - m, worldY + m, worldZ + m,
+			worldX + m, worldY + m, worldZ + m
+		); // back
 		addPlane(
-			vertices, indicies,
-			-m, -m, +m,
-			+m, -m, +m,
-			+m, -m, -m,
-			-m, -m, -m
+			submodel,
+			worldX - m, worldY - m, worldZ + m,
+			worldX + m, worldY - m, worldZ + m,
+			worldX + m, worldY - m, worldZ - m,
+			worldX - m, worldY - m, worldZ - m
 		); // down
 		addPlane(
-			vertices, indicies,
-			-m, +m, -m,
-			+m, +m, -m,
-			+m, +m, +m,
-			-m, +m, +m
+			submodel,
+			worldX -m, worldY + m, worldZ - m,
+			worldX +m, worldY + m, worldZ - m,
+			worldX +m, worldY + m, worldZ + m,
+			worldX -m, worldY + m, worldZ + m
 		); // up
 		addPlane(
-			vertices, indicies,
-			+m, -m, -m,
-			+m, -m, +m,
-			+m, +m, +m,
-			+m, +m, -m
+			submodel,
+			worldX + m, worldY - m, worldZ - m,
+			worldX + m, worldY - m, worldZ + m,
+			worldX + m, worldY + m, worldZ + m,
+			worldX + m, worldY + m, worldZ - m
 		); // right
 		addPlane(
-			vertices, indicies,
-			-m, -m, +m,
-			-m, -m, -m,
-			-m, +m, -m,
-			-m, +m, +m
+			submodel,
+			worldX - m, worldY - m, worldZ + m,
+			worldX - m, worldY - m, worldZ - m,
+			worldX - m, worldY + m, worldZ - m,
+			worldX - m, worldY + m, worldZ + m
 		); // left
 	}
 
 	void addPlane(
-		std::vector<float>& vertices,
-		std::vector<unsigned int>& indicies,
+		Submodel& submodel,
 		float x1, float y1, float z1,
 		float x2, float y2, float z2,
 		float x3, float y3, float z3,
 		float x4, float y4, float z4
 	) {
-		unsigned int startIndex{ static_cast<unsigned int>(vertices.size() / 3) };
+		unsigned int startIndex{ static_cast<unsigned int>(submodel.vertices.size() / 3) };
 
 		// vertices
-		vertices.push_back(x1);
-		vertices.push_back(y1);
-		vertices.push_back(z1);
+		submodel.vertices.push_back(x1);
+		submodel.vertices.push_back(y1);
+		submodel.vertices.push_back(z1);
 
-		vertices.push_back(x2);
-		vertices.push_back(y2);
-		vertices.push_back(z2);
+		submodel.vertices.push_back(x2);
+		submodel.vertices.push_back(y2);
+		submodel.vertices.push_back(z2);
 
-		vertices.push_back(x3);
-		vertices.push_back(y3);
-		vertices.push_back(z3);
+		submodel.vertices.push_back(x3);
+		submodel.vertices.push_back(y3);
+		submodel.vertices.push_back(z3);
 
-		vertices.push_back(x4);
-		vertices.push_back(y4);
-		vertices.push_back(z4);
+		submodel.vertices.push_back(x4);
+		submodel.vertices.push_back(y4);
+		submodel.vertices.push_back(z4);
 
 		// indicies
-		indicies.push_back(startIndex + 0);
-		indicies.push_back(startIndex + 1);
-		indicies.push_back(startIndex + 2);
+		submodel.indicies.push_back(startIndex + 0);
+		submodel.indicies.push_back(startIndex + 1);
+		submodel.indicies.push_back(startIndex + 2);
 
-		indicies.push_back(startIndex + 0);
-		indicies.push_back(startIndex + 2);
-		indicies.push_back(startIndex + 3);
+		submodel.indicies.push_back(startIndex + 0);
+		submodel.indicies.push_back(startIndex + 2);
+		submodel.indicies.push_back(startIndex + 3);
 	}
 
 };

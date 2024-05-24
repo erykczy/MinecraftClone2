@@ -42,7 +42,9 @@ public:
 			glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch))
 		};
 	}
-
+	glm::vec3 getRight() const {
+		return glm::cross(getUp(), getForward());
+	}
 	glm::vec3 getUp() const {
 		return glm::vec3{ 0.0f, 1.0f, 0.0f }; // TODO not always true
 	}

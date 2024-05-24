@@ -22,6 +22,7 @@ public:
 	int getWidth() const { return m_width; }
 	int getHeight() const { return m_height; }
 	float getAspectRatio() const { return static_cast<float>(m_width) / m_height; }
+	GLFWwindow* getGlfwWindow() { return m_glfwWindow; }
 
 	static void onWindowSizeChanged(GLFWwindow* window, int width, int height);
 

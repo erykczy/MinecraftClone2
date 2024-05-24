@@ -5,7 +5,10 @@
 #include "src/rendering/Material.h"
 #include "src/rendering/ClientCamera.h"
 #include "src/event/IWindowEventListener.h"
+#include "src/app/Input.h"
+#include "src/app/Time.h"
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 class GameScene final : public Scene, public IWindowEventListener {
 public:
@@ -31,13 +34,33 @@ public:
 		testModel.setMaterial(&testMaterial);
 
 		Window::s_activeWindow->addListener(this);
+		Input::setCursorVisible(false);
 	}
 
 	void render() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		camera.position.z -= 0.04f;
+		float speed{ 1.5f };
+		if (Input::isKeyDown(GLFW_KEY_LEFT_SHIFT))
+			speed *= 2.0f;
+		if(Input::isKeyDown(GLFW_KEY_W))
+			camera.position += speed * Time::getDeltaTime() * camera.getForward();
+		if (Input::isKeyDown(GLFW_KEY_S))
+			camera.position -= speed * Time::getDeltaTime() * camera.getForward();
+		if (Input::isKeyDown(GLFW_KEY_D))
+			camera.position += speed * Time::getDeltaTime() * camera.getRight();
+		if (Input::isKeyDown(GLFW_KEY_A))
+			camera.position -= speed * Time::getDeltaTime() * camera.getRight();
+		if (Input::isKeyDown(GLFW_KEY_SPACE))
+			camera.position += speed * Time::getDeltaTime() * camera.getUp();
+		if (Input::isKeyDown(GLFW_KEY_LEFT_CONTROL))
+			camera.position -= speed * Time::getDeltaTime() * camera.getUp();
+		glm::vec2 mouseDelta{ Input::getMousePosDelta() };
+		float rotationSpeed{ 1.5f };
+		camera.yaw -= rotationSpeed * Time::getDeltaTime() * mouseDelta.x;
+		camera.pitch -= rotationSpeed * Time::getDeltaTime() * mouseDelta.y;
+
 
 		testModel.setPosition(glm::vec3{ 0, 0, 5 });
 		camera.renderModel(testModel);

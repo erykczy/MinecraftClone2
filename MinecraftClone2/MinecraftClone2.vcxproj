@@ -154,6 +154,8 @@
     <ClCompile Include="libraries\glad.c" />
     <ClCompile Include="libraries\stb_image.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\app\Time.cpp" />
+    <ClCompile Include="src\app\Input.cpp" />
     <ClCompile Include="src\rendering\ClientCamera.cpp" />
     <ClCompile Include="src\app\Debug.cpp" />
     <ClCompile Include="src\rendering\Material.cpp" />
@@ -163,6 +165,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\stb_image.h" />
+    <ClInclude Include="src\app\Time.h" />
+    <ClInclude Include="src\app\Input.h" />
     <ClInclude Include="src\rendering\ClientCamera.h" />
     <ClInclude Include="src\app\Constants.h" />
     <ClInclude Include="src\app\Debug.h" />

@@ -39,8 +39,20 @@ void Chunk::setBlock(const glm::ivec3& pos, const T& newBlockState) {
 	// remove existing blockState
 	auto* existingBlockState{ getBlock(pos) };
 	if (existingBlockState->m_users == 0) {
-		m_palette[m_blocks[pos.x][pos.y][pos.z]] = nullptr;
+		short index{ m_blocks[pos.x][pos.y][pos.z] };
+		m_palette.erase(m_palette.begin() + index);
 		delete existingBlockState;
+
+		// update existing indicies
+		for (int x = 0; x < CHUNK_WIDTH; ++x) {
+			for (int z = 0; z < CHUNK_WIDTH; ++z) {
+				for (int y = 0; y < CHUNK_HEIGHT; ++y) {
+					if (m_blocks[getPosition().x + x][y][getPosition().y + z] > index) {
+						--m_blocks[getPosition().x + x][y][getPosition().y + z];
+					}
+				}
+			}
+		}
 	}
 	else {
 		--existingBlockState->m_users;

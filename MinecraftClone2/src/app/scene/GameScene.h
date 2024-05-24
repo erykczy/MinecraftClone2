@@ -47,7 +47,7 @@ public:
 
 		chunkModel = std::make_unique<ChunkModel>(chunk, testMaterial);
 
-		Debug::setWireframeRendering(true);
+		//Debug::setWireframeRendering(true);
 	}
 
 	void render() {

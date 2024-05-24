@@ -3,7 +3,7 @@
 
 void ChunkModel::render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {
 	for (int i = 0; i < m_submodels.size(); ++i) {
-		if (m_chunk.m_palette[i]->blockId == 0) continue;
+		if (m_chunk.m_palette[i]->blockId == 0) continue; // TODO
 		m_submodels[i].render(m_material, viewMatrix, projectionMatrix);
 	}
 }

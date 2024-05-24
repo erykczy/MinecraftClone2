@@ -8,4 +8,5 @@ namespace Blocks {
 	inline constexpr BlockState dirt{ 2 };
 	inline constexpr BlockState grass_block{ 3 };
 	inline constexpr BlockState null_block{ 1000 };
+	inline constexpr BlockState null_block2{ 1001 };
 }

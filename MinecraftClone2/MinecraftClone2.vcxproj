@@ -162,6 +162,9 @@
     <ClCompile Include="src\rendering\Model.cpp" />
     <ClCompile Include="src\app\Program.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
+    <ClCompile Include="src\world\Chunk.cpp" />
+    <ClCompile Include="src\world\Level.cpp" />
+    <ClCompile Include="src\world\WorldGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\stb_image.h" />
@@ -179,6 +182,12 @@
     <ClInclude Include="src\app\scene\GameScene.h" />
     <ClInclude Include="src\app\scene\Scene.h" />
     <ClInclude Include="src\app\Window.h" />
+    <ClInclude Include="src\world\Blocks.h" />
+    <ClInclude Include="src\world\BlockState.h" />
+    <ClInclude Include="src\world\Chunk.h" />
+    <ClInclude Include="src\world\Level.h" />
+    <ClInclude Include="src\world\World.h" />
+    <ClInclude Include="src\world\WorldGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\fragment.glsl" />

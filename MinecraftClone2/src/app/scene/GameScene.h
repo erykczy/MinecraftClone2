@@ -1,17 +1,21 @@
 #pragma once
 #include "src/app/scene/Scene.h"
 #include "src/app/Debug.h"
+#include "src/app/Input.h"
+#include "src/app/Time.h"
 #include "src/rendering/Model.h"
 #include "src/rendering/Material.h"
 #include "src/rendering/ClientCamera.h"
 #include "src/event/IWindowEventListener.h"
-#include "src/app/Input.h"
-#include "src/app/Time.h"
+#include "src/world/World.h"
+#include "src/world/WorldGenerator.h"
+#include "src/world/Blocks.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 class GameScene final : public Scene, public IWindowEventListener {
 public:
+	World world{};
 	Material testMaterial{ "src/shaders/vertex.glsl", "src/shaders/fragment.glsl" };
 	Model testModel{};
 	ClientCamera camera{};
@@ -35,6 +39,9 @@ public:
 
 		Window::s_activeWindow->addListener(this);
 		Input::setCursorVisible(false);
+
+		auto& chunk{ world.overworld.addChunk(glm::ivec2{ 0, 0 }) };
+		WorldGenerator::generateChunk(chunk);
 	}
 
 	void render() {

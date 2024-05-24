@@ -1,5 +1,6 @@
 #pragma once
 #include "src/Model.h"
+#include "src/ClientCamera.h"
 #include <glad/glad.h>
 
 Model::Model() {
@@ -37,12 +38,22 @@ void Model::setMesh(const Mesh& mesh)
 	glBufferData(GL_ARRAY_BUFFER, m_mesh.getSizeOfIndicies(), m_mesh.indicies.data(), GL_DYNAMIC_DRAW);
 }
 
-void Model::render() {
+void Model::render(const ClientCamera& camera) {
 	if (!m_material) {
 		Debug::logger << "Material is nullptr!" << Debug::endError;
 		return;
 	}
+	m_material->setTransformMatricies(m_modelMatrix, camera.createViewMatrix(), camera.getProjectionMatrix());
 	m_material->use();
 	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, m_mesh.indicies.size(), GL_UNSIGNED_INT, 0);
+}
+
+void Model::setPosition(const glm::vec3& value) {
+	m_position = value;
+	updateModelMatrix();
+}
+
+void Model::updateModelMatrix() {
+	m_modelMatrix = glm::translate(glm::mat4{ 1.0 }, m_position);
 }

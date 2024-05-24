@@ -4,9 +4,8 @@
 
 #include <sstream>
 #include <iomanip>
-
-//struct vec2i;
-//struct vec3i;
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 
 namespace Debug {
 	enum DebugType {
@@ -49,5 +48,5 @@ namespace Debug {
 	void setWireframeRendering(bool wireframeRendering);
 }
 
-//std::ostream& operator<<(std::ostream& out, const vec2i& vec);
-//std::ostream& operator<<(std::ostream& out, const vec3i& vec);
+std::ostream& operator<<(std::ostream& out, const glm::vec2& vec);
+std::ostream& operator<<(std::ostream& out, const glm::vec3& vec);

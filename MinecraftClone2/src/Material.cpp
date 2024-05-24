@@ -1,6 +1,7 @@
 #include "src/Material.h"
 #include "src/Debug.h"
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 #include <fstream>
 #include <sstream>
 
@@ -98,4 +99,37 @@ unsigned int Material::compileAndLinkProgram() {
 	glDeleteShader(fragmentShader);
 
 	return program;
+}
+
+void Material::setTransformMatricies(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {
+	setMatrix4x4("model", modelMatrix);
+	setMatrix4x4("view", viewMatrix);
+	setMatrix4x4("projection", projectionMatrix);
+}
+
+void Material::setMatrix4x4(std::string_view uniformName, const glm::mat4& matrix) {
+	glProgramUniformMatrix4fv(m_programId, findUniformLocation(uniformName), 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void Material::setVector3(std::string_view uniformName, const glm::vec3& vec) {
+	glProgramUniform3fv(m_programId, findUniformLocation(uniformName), 1, glm::value_ptr(vec));
+}
+
+void Material::setVector4(std::string_view uniformName, const glm::vec4& vec)
+{
+	glProgramUniform4fv(m_programId, findUniformLocation(uniformName), 1, glm::value_ptr(vec));
+}
+
+void Material::setFloat(std::string_view uniformName, float value)
+{
+	glProgramUniform1f(m_programId, findUniformLocation(uniformName), value);
+}
+
+void Material::setInt(std::string_view uniformName, int value)
+{
+	glProgramUniform1i(m_programId, findUniformLocation(uniformName), value);
+}
+
+int Material::findUniformLocation(std::string_view name) const {
+	return glGetUniformLocation(m_programId, name.data());
 }

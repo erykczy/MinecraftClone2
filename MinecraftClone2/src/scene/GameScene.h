@@ -3,11 +3,13 @@
 #include "src/Debug.h"
 #include "src/Model.h"
 #include <glad/glad.h>
+#include <src/ClientCamera.h>
 
 class GameScene final : public Scene {
 public:
 	Material testMaterial{ "src/shaders/vertex.glsl", "src/shaders/fragment.glsl" };
 	Model testModel{};
+	ClientCamera camera{};
 
 	GameScene() {
 		Debug::logger << "Game Scene created!" << Debug::endDebug;
@@ -31,6 +33,9 @@ public:
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		testModel.render();
+		camera.position.z -= 0.04f;
+
+		testModel.setPosition(glm::vec3{ 0, 0, 5 });
+		testModel.render(camera);
 	}
 };

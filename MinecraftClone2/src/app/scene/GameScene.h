@@ -10,14 +10,16 @@
 #include "src/world/World.h"
 #include "src/world/WorldGenerator.h"
 #include "src/world/Blocks.h"
+#include "src/world/ChunkModel.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-class GameScene final : public Scene, public IWindowEventListener {
+class GameScene final : public Scene, private IWindowEventListener {
 public:
 	World world{};
+	std::unique_ptr<ChunkModel> chunkModel{};
 	Material testMaterial{ "src/shaders/vertex.glsl", "src/shaders/fragment.glsl" };
-	Model testModel{};
+	//Model testModel{};
 	ClientCamera camera{};
 
 	GameScene() {
@@ -34,21 +36,25 @@ public:
 				0, 3, 2
 			}
 		};
-		testModel.setMesh(mesh);
-		testModel.setMaterial(&testMaterial);
+		//testModel.setMesh(mesh);
+		//testModel.setMaterial(&testMaterial);
 
 		Window::s_activeWindow->addListener(this);
 		Input::setCursorVisible(false);
 
 		auto& chunk{ world.overworld.addChunk(glm::ivec2{ 0, 0 }) };
 		WorldGenerator::generateChunk(chunk);
+
+		chunkModel = std::make_unique<ChunkModel>(chunk, testMaterial);
+
+		Debug::setWireframeRendering(true);
 	}
 
 	void render() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		float speed{ 1.5f };
+		float speed{ 5.0f };
 		if (Input::isKeyDown(GLFW_KEY_LEFT_SHIFT))
 			speed *= 2.0f;
 		if(Input::isKeyDown(GLFW_KEY_W))
@@ -69,12 +75,13 @@ public:
 		camera.pitch -= rotationSpeed * Time::getDeltaTime() * mouseDelta.y;
 
 
-		testModel.setPosition(glm::vec3{ 0, 0, 5 });
-		camera.renderModel(testModel);
+		//testModel.setPosition(glm::vec3{ 0, 0, 5 });
+		//camera.renderModel(testModel);
+		camera.render(*chunkModel);
 	}
 
+private:
 	void onWindowSizeChanged(Window& window) override {
-		Debug::logger << "Window size changed!" << Debug::endDebug;
 		camera.setAspectRatio(window.getAspectRatio());
 	}
 };

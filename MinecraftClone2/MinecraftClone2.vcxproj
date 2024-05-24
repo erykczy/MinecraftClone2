@@ -163,6 +163,7 @@
     <ClCompile Include="src\app\Program.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
     <ClCompile Include="src\world\Chunk.cpp" />
+    <ClCompile Include="src\world\ChunkModel.cpp" />
     <ClCompile Include="src\world\Level.cpp" />
     <ClCompile Include="src\world\WorldGenerator.cpp" />
   </ItemGroup>
@@ -170,11 +171,13 @@
     <ClInclude Include="libraries\stb_image.h" />
     <ClInclude Include="src\app\Time.h" />
     <ClInclude Include="src\app\Input.h" />
+    <ClInclude Include="src\event\IChunkEventListener.h" />
     <ClInclude Include="src\rendering\ClientCamera.h" />
     <ClInclude Include="src\app\Constants.h" />
     <ClInclude Include="src\app\Debug.h" />
     <ClInclude Include="src\event\IEventSender.h" />
     <ClInclude Include="src\event\IWindowEventListener.h" />
+    <ClInclude Include="src\rendering\IRenderable.h" />
     <ClInclude Include="src\rendering\Material.h" />
     <ClInclude Include="src\rendering\Mesh.h" />
     <ClInclude Include="src\rendering\Model.h" />
@@ -185,6 +188,7 @@
     <ClInclude Include="src\world\Blocks.h" />
     <ClInclude Include="src\world\BlockState.h" />
     <ClInclude Include="src\world\Chunk.h" />
+    <ClInclude Include="src\world\ChunkModel.h" />
     <ClInclude Include="src\world\Level.h" />
     <ClInclude Include="src\world\World.h" />
     <ClInclude Include="src\world\WorldGenerator.h" />

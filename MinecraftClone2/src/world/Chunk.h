@@ -1,6 +1,8 @@
 #pragma once
 
 #include "src/world/BlockState.h"
+#include "src/event/IEventSender.h"
+#include "src/event/IChunkEventListener.h"
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
@@ -10,7 +12,7 @@ static_assert(sizeof(short) == 2);
 inline constexpr int CHUNK_WIDTH = 16;
 inline constexpr int CHUNK_HEIGHT = 256;
 
-class Chunk final {
+class Chunk final : public IEventSender<IChunkEventListener> {
 public:
 	explicit Chunk(const glm::ivec2& pos);
 
@@ -23,7 +25,7 @@ public:
 	template<typename T>
 	void setBlock(const glm::ivec3& pos, const T& newBlockState);
 
-	friend class ChunkRenderer;
+	friend class ChunkModel;
 
 private:
 	glm::ivec2 m_position{};
@@ -74,4 +76,5 @@ void Chunk::setBlock(const glm::ivec3& pos, const T& newBlockState) {
 	}
 	// set pointer
 	m_blocks[pos.x][pos.y][pos.z] = static_cast<unsigned short>(index);
+	notifyListeners([&pos](IChunkEventListener* listener) { listener->onBlockChanged(pos); });
 }

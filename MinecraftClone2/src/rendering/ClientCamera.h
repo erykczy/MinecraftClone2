@@ -5,7 +5,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 
-class Model;
+class IRenderable;
 
 class ClientCamera final {
 public:
@@ -15,7 +15,7 @@ public:
 
 	ClientCamera();
 
-	void renderModel(const Model& model) const;
+	void render(IRenderable& renderable) const;
 
 	glm::mat4 createViewMatrix() const;
 	glm::mat4 getProjectionMatrix() const { return m_projectionMatrix; }

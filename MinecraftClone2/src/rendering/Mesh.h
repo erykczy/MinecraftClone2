@@ -6,10 +6,10 @@
 class Mesh final {
 public:
 	std::vector<float> vertices{};
-	std::vector<int> indicies{};
+	std::vector<unsigned int> indicies{};
 
 	Mesh() = default;
-	Mesh(std::vector<float> vertices, std::vector<int> indicies)
+	Mesh(std::vector<float> vertices, std::vector<unsigned int> indicies)
 		: vertices{ vertices }
 		, indicies{ indicies }
 	{
@@ -23,7 +23,7 @@ public:
 	}
 
 	int getSizeOfIndicies() {
-		static_assert(typeid(indicies) == typeid(std::vector<int>));
+		static_assert(typeid(indicies) == typeid(std::vector<unsigned int>));
 		return static_cast<int>(sizeof(int) * indicies.size());
 	}
 };

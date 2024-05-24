@@ -1,8 +1,10 @@
 #pragma once
-#include "src/scene/Scene.h"
-#include "src/Debug.h"
-#include "src/Model.h"
-#include "src/ClientCamera.h"
+#include "src/app/scene/Scene.h"
+#include "src/app/Debug.h"
+#include "src/rendering/Model.h"
+#include "src/rendering/Material.h"
+#include "src/rendering/ClientCamera.h"
+#include "src/event/IWindowEventListener.h"
 #include <glad/glad.h>
 
 class GameScene final : public Scene, public IWindowEventListener {

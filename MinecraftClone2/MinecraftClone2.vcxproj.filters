@@ -18,13 +18,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window.cpp">
+    <ClCompile Include="src\app\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Debug.cpp">
+    <ClCompile Include="src\app\Debug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Program.cpp">
+    <ClCompile Include="src\app\Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libraries\glad.c">
@@ -33,48 +33,48 @@
     <ClCompile Include="libraries\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Model.cpp">
+    <ClCompile Include="src\rendering\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Material.cpp">
+    <ClCompile Include="src\rendering\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ClientCamera.cpp">
+    <ClCompile Include="src\rendering\ClientCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Program.h">
+    <ClInclude Include="src\app\Program.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Window.h">
+    <ClInclude Include="src\app\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Constants.h">
+    <ClInclude Include="src\app\Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Debug.h">
+    <ClInclude Include="src\app\Debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libraries\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\Scene.h">
+    <ClInclude Include="src\app\scene\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\GameScene.h">
+    <ClInclude Include="src\app\scene\GameScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Model.h">
+    <ClInclude Include="src\rendering\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mesh.h">
+    <ClInclude Include="src\rendering\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Material.h">
+    <ClInclude Include="src\rendering\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ClientCamera.h">
+    <ClInclude Include="src\rendering\ClientCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\event\IEventSender.h">

@@ -1,7 +1,7 @@
-#include "src/Window.h"
+#include "Window.h"
 
-#include "src/Constants.h"
-#include "src/Debug.h"
+#include "src/app/Constants.h"
+#include "src/app/Debug.h"
 #include <GLFW/glfw3.h>
 
 Window* Window::s_activeWindow{};

@@ -1,5 +1,5 @@
-#include "src/Material.h"
-#include "src/Debug.h"
+#include "Material.h"
+#include "src/app/Debug.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <fstream>

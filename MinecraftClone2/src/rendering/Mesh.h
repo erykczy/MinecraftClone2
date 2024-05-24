@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <cassert>
-#include "Debug.h"
+#include "src/app/Debug.h"
 
 class Mesh final {
 public:
@@ -19,12 +19,12 @@ public:
 
 	int getSizeOfVertices() {
 		static_assert(typeid(vertices) == typeid(std::vector<float>));
-		return sizeof(float) * vertices.size();
+		return static_cast<int>(sizeof(float) * vertices.size());
 	}
 
 	int getSizeOfIndicies() {
 		static_assert(typeid(indicies) == typeid(std::vector<int>));
-		return sizeof(int) * indicies.size();
+		return static_cast<int>(sizeof(int) * indicies.size());
 	}
 };
 

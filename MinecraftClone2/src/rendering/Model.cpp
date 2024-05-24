@@ -1,6 +1,7 @@
 #pragma once
-#include "src/Model.h"
-#include "src/ClientCamera.h"
+#include "Model.h"
+#include "src/rendering/ClientCamera.h"
+#include "src/rendering/Material.h"
 #include <glad/glad.h>
 
 Model::Model() {

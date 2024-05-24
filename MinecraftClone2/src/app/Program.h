@@ -1,6 +1,6 @@
 #pragma once
-#include "src/Window.h"
-#include "src/scene/Scene.h"
+#include "src/app/Window.h"
+#include "src/app/scene/Scene.h"
 
 #include <memory>
 

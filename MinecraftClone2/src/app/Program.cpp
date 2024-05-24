@@ -1,7 +1,7 @@
-#include "src/Program.h"
-#include "src/Constants.h"
-#include "src/Debug.h"
-#include "src/scene/GameScene.h"
+#include "Program.h"
+#include "src/app/Constants.h"
+#include "src/app/Debug.h"
+#include "src/app/scene/GameScene.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 

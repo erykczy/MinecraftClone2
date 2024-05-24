@@ -1,6 +1,6 @@
-#include "src/ClientCamera.h"
-#include "src/Debug.h"
-#include "src/Model.h"
+#include "ClientCamera.h"
+#include "src/app/Debug.h"
+#include "src/rendering/Model.h"
 #include <glm/ext/matrix_transform.hpp>
 
 ClientCamera::ClientCamera() {

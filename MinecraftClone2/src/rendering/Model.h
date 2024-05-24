@@ -1,9 +1,9 @@
 #pragma once
-#include "Mesh.h"
-#include "Material.h"
+#include "src/rendering/Mesh.h"
 #include <glm/ext/matrix_transform.hpp>
 
 class ClientCamera;
+class Material;
 
 class Model final {
 public:

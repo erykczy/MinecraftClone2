@@ -5,6 +5,8 @@
 #include <glm/mat4x4.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 
+class Model;
+
 class ClientCamera final {
 public:
 	glm::vec3 position{};
@@ -12,6 +14,8 @@ public:
 	float pitch{};
 
 	ClientCamera();
+
+	void renderModel(const Model& model) const;
 
 	glm::mat4 createViewMatrix() const;
 	glm::mat4 getProjectionMatrix() const { return m_projectionMatrix; }
@@ -29,7 +33,7 @@ public:
 	void setFarPlane(float value);
 
 	void setAspectRatio(float value);
-	void setAutoAspectRatio(bool value);
+	float getAspectRatio() const { return m_aspectRatio; }
 
 	glm::vec3 getForward() const {
 		return glm::vec3{
@@ -45,7 +49,6 @@ public:
 
 private:
 	glm::mat4 m_projectionMatrix{};
-	bool m_autoAspectRatio{ false };
 	float m_fovDegrees{ Constants::defaultCameraFovDegrees };
 	float m_aspectRatio{ static_cast<float>(Constants::defaultWindowWidth) / Constants::defaultWindowHeight };
 	float m_farPlane{ Constants::defaultCameraFarPlane };

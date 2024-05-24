@@ -4,13 +4,13 @@
 #include "src/Debug.h"
 #include <GLFW/glfw3.h>
 
-Window* Window::activeWindow{};
+Window* Window::s_activeWindow{};
 
-Window::Window(int screenWidth, int screenHeight, std::string_view title) {
-    if (activeWindow) {
+Window::Window(int width, int height, std::string_view title) {
+    if (s_activeWindow) {
         Debug::logger << "Only 1 window can be instantiated!" << Debug::endFatalError;
     }
-    activeWindow = this;
+    s_activeWindow = this;
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, Constants::openGlVersionMajor);
@@ -19,7 +19,7 @@ Window::Window(int screenWidth, int screenHeight, std::string_view title) {
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-    m_glfwWindow = glfwCreateWindow(screenWidth, screenHeight, title.data(), NULL, NULL);
+    m_glfwWindow = glfwCreateWindow(width, height, title.data(), NULL, NULL);
     if (m_glfwWindow == NULL)
     {
         Debug::logger << "Failed to create GLFW window" << Debug::endFatalError;
@@ -27,6 +27,9 @@ Window::Window(int screenWidth, int screenHeight, std::string_view title) {
     glfwMakeContextCurrent(m_glfwWindow);
     glfwSetFramebufferSizeCallback(m_glfwWindow, Window::onWindowSizeChanged);
     glfwSetInputMode(m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    m_width = width;
+    m_height = height;
 }
 
 Window::~Window() {
@@ -54,4 +57,7 @@ void Window::close()
 
 void Window::onWindowSizeChanged(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+    Window::s_activeWindow->m_width = width;
+    Window::s_activeWindow->m_height = height;
+    Window::s_activeWindow->notifyListeners([](IWindowEventListener* l) { l->onWindowSizeChanged(*Window::s_activeWindow); });
 }

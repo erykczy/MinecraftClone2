@@ -166,6 +166,8 @@
     <ClInclude Include="src\ClientCamera.h" />
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Debug.h" />
+    <ClInclude Include="src\event\IEventSender.h" />
+    <ClInclude Include="src\event\IWindowEventListener.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\Model.h" />

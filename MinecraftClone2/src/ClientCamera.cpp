@@ -1,9 +1,14 @@
 #include "src/ClientCamera.h"
 #include "src/Debug.h"
+#include "src/Model.h"
 #include <glm/ext/matrix_transform.hpp>
 
 ClientCamera::ClientCamera() {
 	updateProjectionMatrix();
+}
+
+void ClientCamera::renderModel(const Model& model) const {
+	model.render(createViewMatrix(), getProjectionMatrix());
 }
 
 glm::mat4 ClientCamera::createViewMatrix() const
@@ -27,20 +32,6 @@ void ClientCamera::setFarPlane(float value) {
 }
 
 void ClientCamera::setAspectRatio(float value) {
-	if (m_autoAspectRatio)
-		Debug::logger << "You are trying to change aspect ratio while it is updated automatically. Change autoAspectRatio value!" << Debug::endWarning;
 	m_aspectRatio = value;
 	updateProjectionMatrix();
-}
-
-void ClientCamera::setAutoAspectRatio(bool value) {
-	m_autoAspectRatio = value;
-	// TODO
-	/*if (m_autoAspectRatio) {
-		m_aspectRatio = Window::s_activeWindow->getAspectRatio();
-		Window::s_activeWindow->addListener(this);
-	}
-	else {
-		Window::s_activeWindow->removeListener(this);
-	}*/
 }

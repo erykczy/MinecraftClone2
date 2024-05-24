@@ -38,12 +38,12 @@ void Model::setMesh(const Mesh& mesh)
 	glBufferData(GL_ARRAY_BUFFER, m_mesh.getSizeOfIndicies(), m_mesh.indicies.data(), GL_DYNAMIC_DRAW);
 }
 
-void Model::render(const ClientCamera& camera) {
+void Model::render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) const {
 	if (!m_material) {
 		Debug::logger << "Material is nullptr!" << Debug::endError;
 		return;
 	}
-	m_material->setTransformMatricies(m_modelMatrix, camera.createViewMatrix(), camera.getProjectionMatrix());
+	m_material->setTransformMatricies(m_modelMatrix, viewMatrix, projectionMatrix);
 	m_material->use();
 	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, m_mesh.indicies.size(), GL_UNSIGNED_INT, 0);

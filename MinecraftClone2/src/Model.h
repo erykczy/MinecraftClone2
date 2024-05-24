@@ -10,7 +10,7 @@ public:
 	Model();
 	~Model();
 
-	void render(const ClientCamera& camera);
+	void render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) const;
 
 	void setMesh(const Mesh& mesh);
 	const Mesh& getMesh() { return m_mesh; }

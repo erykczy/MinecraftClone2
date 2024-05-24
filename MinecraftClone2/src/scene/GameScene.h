@@ -2,10 +2,10 @@
 #include "src/scene/Scene.h"
 #include "src/Debug.h"
 #include "src/Model.h"
+#include "src/ClientCamera.h"
 #include <glad/glad.h>
-#include <src/ClientCamera.h>
 
-class GameScene final : public Scene {
+class GameScene final : public Scene, public IWindowEventListener {
 public:
 	Material testMaterial{ "src/shaders/vertex.glsl", "src/shaders/fragment.glsl" };
 	Model testModel{};
@@ -27,6 +27,8 @@ public:
 		};
 		testModel.setMesh(mesh);
 		testModel.setMaterial(&testMaterial);
+
+		Window::s_activeWindow->addListener(this);
 	}
 
 	void render() {
@@ -36,6 +38,11 @@ public:
 		camera.position.z -= 0.04f;
 
 		testModel.setPosition(glm::vec3{ 0, 0, 5 });
-		testModel.render(camera);
+		camera.renderModel(testModel);
+	}
+
+	void onWindowSizeChanged(Window& window) override {
+		Debug::logger << "Window size changed!" << Debug::endDebug;
+		camera.setAspectRatio(window.getAspectRatio());
 	}
 };

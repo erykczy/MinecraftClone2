@@ -102,9 +102,9 @@ unsigned int Material::compileAndLinkProgram() {
 }
 
 void Material::setTransformMatricies(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {
-	setMatrix4x4("model", modelMatrix);
-	setMatrix4x4("view", viewMatrix);
-	setMatrix4x4("projection", projectionMatrix);
+	setMatrix4x4("Model", modelMatrix);
+	setMatrix4x4("View", viewMatrix);
+	setMatrix4x4("Projection", projectionMatrix);
 }
 
 void Material::setMatrix4x4(std::string_view uniformName, const glm::mat4& matrix) {
@@ -128,6 +128,10 @@ void Material::setFloat(std::string_view uniformName, float value)
 void Material::setInt(std::string_view uniformName, int value)
 {
 	glProgramUniform1i(m_programId, findUniformLocation(uniformName), value);
+}
+
+void Material::setTextureUnit(std::string_view uniformName, int textureUnit) {
+	glProgramUniform1i(m_programId, findUniformLocation(uniformName), textureUnit);
 }
 
 int Material::findUniformLocation(std::string_view name) const {

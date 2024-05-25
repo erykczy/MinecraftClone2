@@ -5,7 +5,7 @@
 class OneTexBlockDef : public BlockDef {
 public:
 	OneTexBlockDef() = default;
-	OneTexBlockDef(std::string_view name, t_id id, const char* allSideTexture) : BlockDef(name, id), m_texture{ allSideTexture } {
+	OneTexBlockDef(std::string_view name, t_id id, const char* allSideTexture) : BlockDef(name, id), m_texture{ allSideTexture, Texture2D::rgba } {
 
 	}
 

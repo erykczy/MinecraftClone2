@@ -1,9 +1,11 @@
 #version 330 core
 
-in vec3 pos;
+in vec2 fTexCoord;
+
+uniform sampler2D FrontTexture;
 
 out vec4 FragColor;
 
 void main() {
-	FragColor = vec4(pos, 1.0);
+	FragColor = texture(FrontTexture, fTexCoord);
 }

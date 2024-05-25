@@ -15,9 +15,17 @@ public:
 	void render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) override;
 
 private:
+	struct Vertex {
+		float x{};
+		float y{};
+		float z{};
+		float u{};
+		float v{};
+	};
+
 	class Submodel final {
 	public:
-		std::vector<float> vertices{};
+		std::vector<Vertex> vertices{};
 		std::vector<unsigned int> indicies{};
 		unsigned int m_vao{};
 		unsigned int m_vbo{};
@@ -27,10 +35,11 @@ private:
 
 		void render(Material& material, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
 		void updateVao();
+		void clear();
 
 		int getSizeOfVertices() {
-			static_assert(typeid(vertices) == typeid(std::vector<float>));
-			return static_cast<int>(sizeof(float) * vertices.size());
+			static_assert(typeid(vertices) == typeid(std::vector<Vertex>));
+			return static_cast<int>(sizeof(Vertex) * vertices.size());
 		}
 
 		int getSizeOfIndicies() {
@@ -52,6 +61,10 @@ private:
 			m_submodels.resize(m_chunk.m_palette.size());
 		}
 
+		for (auto& submodel : m_submodels) {
+			submodel.clear();
+		}
+
 		int chunkX{ m_chunk.getPosition().x };
 		int chunkZ{ m_chunk.getPosition().y };
 
@@ -63,15 +76,13 @@ private:
 			}
 		}
 
-		for (int i{ 0 }; i < m_submodels.size(); ++i) {
-			m_submodels[i].updateVao();
+		for (auto& submodel : m_submodels) {
+			submodel.updateVao();
 		}
 	}
 
 	void addBlock(Submodel& submodel, int worldX, int worldY, int worldZ) {
 		short blockState{ m_chunk.m_blocks[worldX][worldY][worldZ] };
-		auto& vertices{ submodel.vertices };
-		auto& indicies{ submodel.indicies };
 
 		constexpr float m{ 0.5f };
 		addPlane(
@@ -125,24 +136,13 @@ private:
 		float x3, float y3, float z3,
 		float x4, float y4, float z4
 	) {
-		unsigned int startIndex{ static_cast<unsigned int>(submodel.vertices.size() / 3) };
+		unsigned int startIndex{ static_cast<unsigned int>(submodel.vertices.size()) };
 
 		// vertices
-		submodel.vertices.push_back(x1);
-		submodel.vertices.push_back(y1);
-		submodel.vertices.push_back(z1);
-
-		submodel.vertices.push_back(x2);
-		submodel.vertices.push_back(y2);
-		submodel.vertices.push_back(z2);
-
-		submodel.vertices.push_back(x3);
-		submodel.vertices.push_back(y3);
-		submodel.vertices.push_back(z3);
-
-		submodel.vertices.push_back(x4);
-		submodel.vertices.push_back(y4);
-		submodel.vertices.push_back(z4);
+		submodel.vertices.emplace_back(x1, y1, z1, 0.0f, 0.0f);
+		submodel.vertices.emplace_back(x2, y2, z2, 1.0f, 0.0f);
+		submodel.vertices.emplace_back(x3, y3, z3, 1.0f, 1.0f);
+		submodel.vertices.emplace_back(x4, y4, z4, 0.0f, 1.0f);
 
 		// indicies
 		submodel.indicies.push_back(startIndex + 0);

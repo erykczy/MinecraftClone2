@@ -8,7 +8,7 @@ namespace Blocks {
 	void initialize() {
 		all.push_back(new BlockDef("Air", 0));
 		all.push_back(new OneTexBlockDef("Stone", 1, "resources/textures/block/stone.png"));
-		all.push_back(new BlockDef("Dirt", 2));
+		all.push_back(new OneTexBlockDef("Dirt", 2, "resources/textures/block/dirt.png"));
 		all.push_back(new BlockDef("Grass Block", 3));
 		all.push_back(new BlockDef("Null Block 1", 1000));
 		all.push_back(new BlockDef("Null Block 2", 1001));

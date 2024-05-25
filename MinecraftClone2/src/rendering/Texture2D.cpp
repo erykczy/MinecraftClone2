@@ -5,7 +5,7 @@
 #include <libraries/stb_image.h>
 
 
-Texture2D::Texture2D(const char* path, Format format) : m_path{ path }
+Texture2D::Texture2D(std::string_view path, Format format) : m_path{ path }
 {
 	// create texture
 	glGenTextures(1, &m_id);
@@ -19,7 +19,7 @@ Texture2D::Texture2D(const char* path, Format format) : m_path{ path }
 
 	// load texture
 	int nrChannels;
-	unsigned char* data{ stbi_load(path, &m_width, &m_height, &nrChannels, 0) };
+	unsigned char* data{ stbi_load(path.data(), &m_width, &m_height, &nrChannels, 0)};
 	if (!data) Debug::logger << "Failed to load texture" << path << Debug::endError;
 
 	// set data

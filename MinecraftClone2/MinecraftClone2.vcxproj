@@ -188,6 +188,7 @@
     <ClInclude Include="src\app\scene\Scene.h" />
     <ClInclude Include="src\app\Window.h" />
     <ClInclude Include="src\rendering\Texture2D.h" />
+    <ClInclude Include="src\world\TexBlockDef.h" />
     <ClInclude Include="src\world\BlockDef.h" />
     <ClInclude Include="src\world\Blocks.h" />
     <ClInclude Include="src\world\BlockState.h" />

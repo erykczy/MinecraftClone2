@@ -21,6 +21,9 @@ private:
 		float z{};
 		float u{};
 		float v{};
+		float normalX{};
+		float normalY{};
+		float normalZ{};
 	};
 
 	class Submodel final {
@@ -90,42 +93,48 @@ private:
 			worldX - m, worldY - m, worldZ - m,
 			worldX + m, worldY - m, worldZ - m,
 			worldX + m, worldY + m, worldZ - m,
-			worldX - m, worldY + m, worldZ - m
+			worldX - m, worldY + m, worldZ - m,
+			0.0f, 0.0f, -1.0f
 			); // front
 		addPlane(
 			submodel,
 			worldX + m, worldY - m, worldZ + m,
 			worldX - m, worldY - m, worldZ + m,
 			worldX - m, worldY + m, worldZ + m,
-			worldX + m, worldY + m, worldZ + m
+			worldX + m, worldY + m, worldZ + m,
+			0.0f, 0.0f, 1.0f
 		); // back
 		addPlane(
 			submodel,
 			worldX - m, worldY - m, worldZ + m,
 			worldX + m, worldY - m, worldZ + m,
 			worldX + m, worldY - m, worldZ - m,
-			worldX - m, worldY - m, worldZ - m
+			worldX - m, worldY - m, worldZ - m,
+			0.0f, -1.0f, 0.0f
 		); // down
 		addPlane(
 			submodel,
 			worldX -m, worldY + m, worldZ - m,
 			worldX +m, worldY + m, worldZ - m,
 			worldX +m, worldY + m, worldZ + m,
-			worldX -m, worldY + m, worldZ + m
+			worldX -m, worldY + m, worldZ + m,
+			0.0f, 1.0f, 0.0f
 		); // up
 		addPlane(
 			submodel,
 			worldX + m, worldY - m, worldZ - m,
 			worldX + m, worldY - m, worldZ + m,
 			worldX + m, worldY + m, worldZ + m,
-			worldX + m, worldY + m, worldZ - m
+			worldX + m, worldY + m, worldZ - m,
+			1.0f, 0.0f, 0.0f
 		); // right
 		addPlane(
 			submodel,
 			worldX - m, worldY - m, worldZ + m,
 			worldX - m, worldY - m, worldZ - m,
 			worldX - m, worldY + m, worldZ - m,
-			worldX - m, worldY + m, worldZ + m
+			worldX - m, worldY + m, worldZ + m,
+			-1.0f, 0.0f, 0.0f
 		); // left
 	}
 
@@ -134,15 +143,16 @@ private:
 		float x1, float y1, float z1,
 		float x2, float y2, float z2,
 		float x3, float y3, float z3,
-		float x4, float y4, float z4
+		float x4, float y4, float z4,
+		float normalX, float normalY, float normalZ
 	) {
 		unsigned int startIndex{ static_cast<unsigned int>(submodel.vertices.size()) };
 
 		// vertices
-		submodel.vertices.emplace_back(x1, y1, z1, 0.0f, 0.0f);
-		submodel.vertices.emplace_back(x2, y2, z2, 1.0f, 0.0f);
-		submodel.vertices.emplace_back(x3, y3, z3, 1.0f, 1.0f);
-		submodel.vertices.emplace_back(x4, y4, z4, 0.0f, 1.0f);
+		submodel.vertices.emplace_back(x1, y1, z1, 0.0f, 0.0f, normalX, normalY, normalZ);
+		submodel.vertices.emplace_back(x2, y2, z2, 1.0f, 0.0f, normalX, normalY, normalZ);
+		submodel.vertices.emplace_back(x3, y3, z3, 1.0f, 1.0f, normalX, normalY, normalZ);
+		submodel.vertices.emplace_back(x4, y4, z4, 0.0f, 1.0f, normalX, normalY, normalZ);
 
 		// indicies
 		submodel.indicies.push_back(startIndex + 0);

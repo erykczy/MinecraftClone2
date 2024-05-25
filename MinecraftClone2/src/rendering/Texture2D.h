@@ -8,7 +8,7 @@ public:
 		rgba
 	};
 
-	Texture2D(const char* path, Format format = rgba);
+	Texture2D(std::string_view path, Format format = rgba);
 
 	void bindToTextureUnit(int textureUnit) const;
 	

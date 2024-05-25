@@ -1,8 +1,6 @@
 #pragma once
 
-#include "src/world/BlockState.h"
 #include "src/world/BlockDef.h"
-#include "src/world/OneTexBlockDef.h"
 #include <vector>
 
 namespace Blocks {

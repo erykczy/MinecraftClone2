@@ -8,12 +8,12 @@ void WorldGenerator::generateChunk(Chunk& chunk)
 	for (int x = 0; x < 16; ++x) {
 		for (int z = 0; z < 16; ++z) {
 			for (int y = 0; y < 57; ++y) {
-				chunk.setBlock(chunkPos + glm::ivec3{ x, y, z }, Blocks::stone.getDefaultBlockState());
+				chunk.setBlock(chunkPos + glm::ivec3{ x, y, z }, Blocks::all[1]->getDefaultBlockState()); // TODO magic number
 			}
 			for (int y = 57; y < 60; ++y) {
-				chunk.setBlock(chunkPos + glm::ivec3{ x, y, z }, Blocks::dirt.getDefaultBlockState());
+				chunk.setBlock(chunkPos + glm::ivec3{ x, y, z }, Blocks::all[2]->getDefaultBlockState()); // magic number
 			}
-			chunk.setBlock(chunkPos + glm::ivec3{ x, 60, z }, Blocks::grass_block.getDefaultBlockState());
+			chunk.setBlock(chunkPos + glm::ivec3{ x, 60, z }, Blocks::all[3]->getDefaultBlockState()); // magic number
 		}
 	}
 }

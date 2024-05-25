@@ -1,19 +1,22 @@
-#include "Blocks.h"
+#pragma once
+#include "src/world/Blocks.h"
+
 
 namespace Blocks {
-	extern BlockDef<BlockState> air{};
-	extern BlockDef<BlockState> stone{};
-	extern BlockDef<BlockState> dirt{};
-	extern BlockDef<BlockState> grass_block{};
-	extern BlockDef<BlockState> null_block{};
-	extern BlockDef<BlockState> null_block2{};
+	extern std::vector<BlockDef*> all{};
 
 	void initialize() {
-		air = { 0 };
-		stone = { 1 };
-		dirt = { 2 };
-		grass_block = { 3 };
-		null_block = { 1000 };
-		null_block2 = { 1001 };
+		all.push_back(new BlockDef("Air", 0));
+		all.push_back(new OneTexBlockDef("Stone", 1, "resources/textures/block/stone.png"));
+		all.push_back(new BlockDef("Dirt", 2));
+		all.push_back(new BlockDef("Grass Block", 3));
+		all.push_back(new BlockDef("Null Block 1", 1000));
+		all.push_back(new BlockDef("Null Block 2", 1001));
+	}
+
+	void destroy() {
+		for (auto* def : all) {
+			delete def;
+		}
 	}
 }

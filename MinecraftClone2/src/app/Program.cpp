@@ -27,6 +27,10 @@ Program::Program()
 	activeScene = std::make_unique<GameScene>();
 }
 
+Program::~Program() {
+	Blocks::destroy();
+}
+
 void Program::initializeOpenGl() {
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{

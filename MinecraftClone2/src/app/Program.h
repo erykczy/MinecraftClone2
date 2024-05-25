@@ -10,6 +10,7 @@ public:
 	std::unique_ptr<Scene> activeScene{};
 
 	Program();
+	~Program();
 
 	void startProgramLoop();
 

@@ -6,12 +6,24 @@
 #include "src/app/Time.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <libraries/stb_image.h>
 
 Program::Program()
 	: window{ Constants::defaultWindowWidth, Constants::defaultWindowHeight, Constants::windowTitle }
 {
+	// initialize libraries
+	initializeLibraries();
+
+	// initialize opengl
 	initializeOpenGl();
+
+	// initialize input
 	Input::initialize(window);
+
+	// initialize block palette
+	Blocks::initialize();
+
+	// initialize scene TODO GameScene probably shouldn't be first scene
 	activeScene = std::make_unique<GameScene>();
 }
 
@@ -21,6 +33,11 @@ void Program::initializeOpenGl() {
 		Debug::logger << "Failed to initialize GLAD" << Debug::endFatalError;
 	}
 	glEnable(GL_DEPTH_TEST);
+}
+
+void Program::initializeLibraries()
+{
+	stbi_set_flip_vertically_on_load(true);
 }
 
 void Program::startProgramLoop() {

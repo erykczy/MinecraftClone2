@@ -2,7 +2,7 @@
 #include "src/world/Blocks.h"
 
 Chunk::Chunk(const glm::ivec2& pos) : m_position{ pos } {
-	auto* air{ new BlockState{ Blocks::air } };
+	auto* air{ new BlockState{ Blocks::air.getDefaultBlockState()}};
 	air->m_users = CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_WIDTH - 1;
 	m_palette.push_back(air);
 }

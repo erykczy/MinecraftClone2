@@ -15,5 +15,6 @@ public:
 
 private:
 	void initializeOpenGl();
+	void initializeLibraries();
 
 };

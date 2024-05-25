@@ -162,6 +162,8 @@
     <ClCompile Include="src\rendering\Model.cpp" />
     <ClCompile Include="src\app\Program.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
+    <ClCompile Include="src\rendering\Texture2D.cpp" />
+    <ClCompile Include="src\world\Blocks.cpp" />
     <ClCompile Include="src\world\Chunk.cpp" />
     <ClCompile Include="src\world\ChunkModel.cpp" />
     <ClCompile Include="src\world\Level.cpp" />
@@ -185,11 +187,15 @@
     <ClInclude Include="src\app\scene\GameScene.h" />
     <ClInclude Include="src\app\scene\Scene.h" />
     <ClInclude Include="src\app\Window.h" />
+    <ClInclude Include="src\rendering\Texture2D.h" />
+    <ClInclude Include="src\world\BlockDef.h" />
     <ClInclude Include="src\world\Blocks.h" />
     <ClInclude Include="src\world\BlockState.h" />
     <ClInclude Include="src\world\Chunk.h" />
     <ClInclude Include="src\world\ChunkModel.h" />
     <ClInclude Include="src\world\Level.h" />
+    <ClInclude Include="src\world\OneTexBlockDef.h" />
+    <ClInclude Include="src\world\Side.h" />
     <ClInclude Include="src\world\World.h" />
     <ClInclude Include="src\world\WorldGenerator.h" />
   </ItemGroup>

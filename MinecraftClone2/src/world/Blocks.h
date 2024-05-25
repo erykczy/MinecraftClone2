@@ -1,12 +1,15 @@
 #pragma once
 
 #include "src/world/BlockState.h"
+#include "src/world/BlockDef.h"
 
 namespace Blocks {
-	inline constexpr BlockState air{ 0 };
-	inline constexpr BlockState stone{ 1 };
-	inline constexpr BlockState dirt{ 2 };
-	inline constexpr BlockState grass_block{ 3 };
-	inline constexpr BlockState null_block{ 1000 };
-	inline constexpr BlockState null_block2{ 1001 };
+	extern BlockDef<BlockState> air;
+	extern BlockDef<BlockState> stone;
+	extern BlockDef<BlockState> dirt;
+	extern BlockDef<BlockState> grass_block;
+	extern BlockDef<BlockState> null_block;
+	extern BlockDef<BlockState> null_block2;
+
+	void initialize();
 }

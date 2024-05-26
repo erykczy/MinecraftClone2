@@ -1,8 +1,8 @@
 #pragma once
 
 #include "src/rendering/Texture2D.h"
-#include "src/world/BlockState.h"
 
+class BlockState;
 using t_id = unsigned short;
 
 class BlockDef {
@@ -18,7 +18,7 @@ public:
 	}
 	virtual ~BlockDef() = default;
 
-	virtual BlockState getDefaultBlockState() const { return BlockState{ m_blockId }; }
+	virtual BlockState getDefaultBlockState() const;
 	virtual const Texture2D* getTexture(int index) const { return nullptr; }
 	virtual RenderingType getRenderingType() const { return RenderingType::NONE; }
 

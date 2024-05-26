@@ -163,6 +163,7 @@
     <ClCompile Include="src\app\Program.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
     <ClCompile Include="src\rendering\Texture2D.cpp" />
+    <ClCompile Include="src\world\BlockDef.cpp" />
     <ClCompile Include="src\world\Blocks.cpp" />
     <ClCompile Include="src\world\Chunk.cpp" />
     <ClCompile Include="src\world\ChunkModel.cpp" />

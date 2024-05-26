@@ -16,4 +16,10 @@ void WorldGenerator::generateChunk(Chunk& chunk)
 			chunk.setBlock(chunkPos + glm::ivec3{ x, 10, z }, Blocks::all[3]->getDefaultBlockState()); // magic number
 		}
 	}
+
+	for (int x = 1; x < 15; ++x) {
+		for (int z = 1; z < 15; ++z) {
+			chunk.setBlock(chunkPos + glm::ivec3{ x, 11, z }, Blocks::all[3]->getDefaultBlockState());
+		}
+	}
 }

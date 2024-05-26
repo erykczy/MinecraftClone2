@@ -1,5 +1,8 @@
 #pragma once
 
+#include "src/world/Blocks.h"
+
+class BlockDef;
 using t_id = unsigned short;
 
 class BlockState {
@@ -15,6 +18,10 @@ public:
 
 	bool operator==(const BlockState& state) const {
 		return isSame(state) && state.isSame(*this);
+	}
+	
+	BlockDef* getBlockDef() const {
+		return Blocks::all[blockId];
 	}
 
 	friend class Chunk;

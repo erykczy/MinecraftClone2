@@ -46,12 +46,10 @@ public:
 		WorldGenerator::generateChunk(chunk);
 
 		chunkModel = std::make_unique<ChunkModel>(chunk, testMaterial);
-
-		//Debug::setWireframeRendering(true);
 	}
 
 	void render() {
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.72f, 0.82f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		float speed{ 5.0f };
@@ -69,6 +67,12 @@ public:
 			camera.position += speed * Time::getDeltaTime() * camera.getUp();
 		if (Input::isKeyDown(GLFW_KEY_LEFT_CONTROL))
 			camera.position -= speed * Time::getDeltaTime() * camera.getUp();
+		if (Input::isKeyDown(GLFW_KEY_G)) {
+			Debug::setWireframeRendering(true);
+		}
+		else {
+			Debug::setWireframeRendering(false);
+		}
 		glm::vec2 mouseDelta{ Input::getMousePosDelta() };
 		float rotationSpeed{ 1.5f };
 		camera.yaw -= rotationSpeed * Time::getDeltaTime() * mouseDelta.x;

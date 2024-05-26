@@ -1,7 +1,7 @@
 #pragma once
-#include "src/world/Blocks.h"
-#include "src/world/OneTexBlockDef.h"
-#include "src/world/TexBlockDef.h"
+#include "Blocks.h"
+#include "src/world/def/OneTexBlockDef.h"
+#include "src/world/def/TexBlockDef.h"
 
 std::string blockTextures{ "resources/textures/block/" };
 

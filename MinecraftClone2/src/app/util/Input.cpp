@@ -1,7 +1,7 @@
 #include "Input.h"
 
 #include "src/app/Window.h"
-#include "src/app/Debug.h"
+#include "src/app/util/Debug.h"
 
 #include <GLFW/glfw3.h>
 #include <iostream>

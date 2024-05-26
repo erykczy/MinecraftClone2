@@ -1,5 +1,5 @@
 #pragma once
-#include "src/app/Debug.h"
+#include "src/app/util/Debug.h"
 #include <vector>
 #include <functional>
 

@@ -1,5 +1,5 @@
 #include "ClientCamera.h"
-#include "src/app/Debug.h"
+#include "src/app/util/Debug.h"
 #include "src/rendering/IRenderable.h"
 #include <glm/ext/matrix_transform.hpp>
 

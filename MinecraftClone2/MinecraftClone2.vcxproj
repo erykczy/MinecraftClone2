@@ -154,30 +154,30 @@
     <ClCompile Include="libraries\glad.c" />
     <ClCompile Include="libraries\stb_image.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\app\Time.cpp" />
-    <ClCompile Include="src\app\Input.cpp" />
+    <ClCompile Include="src\app\util\Time.cpp" />
+    <ClCompile Include="src\app\util\Input.cpp" />
     <ClCompile Include="src\rendering\ClientCamera.cpp" />
-    <ClCompile Include="src\app\Debug.cpp" />
+    <ClCompile Include="src\app\util\Debug.cpp" />
     <ClCompile Include="src\rendering\Material.cpp" />
     <ClCompile Include="src\rendering\Model.cpp" />
     <ClCompile Include="src\app\Program.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
     <ClCompile Include="src\rendering\Texture2D.cpp" />
-    <ClCompile Include="src\world\BlockDef.cpp" />
-    <ClCompile Include="src\world\Blocks.cpp" />
+    <ClCompile Include="src\world\def\BlockDef.cpp" />
+    <ClCompile Include="src\world\def\Blocks.cpp" />
     <ClCompile Include="src\world\Chunk.cpp" />
-    <ClCompile Include="src\world\ChunkModel.cpp" />
+    <ClCompile Include="src\rendering\ChunkModel.cpp" />
     <ClCompile Include="src\world\Level.cpp" />
-    <ClCompile Include="src\world\WorldGenerator.cpp" />
+    <ClCompile Include="src\world\gen\WorldGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\stb_image.h" />
-    <ClInclude Include="src\app\Time.h" />
-    <ClInclude Include="src\app\Input.h" />
+    <ClInclude Include="src\app\util\Time.h" />
+    <ClInclude Include="src\app\util\Input.h" />
     <ClInclude Include="src\event\IChunkEventListener.h" />
     <ClInclude Include="src\rendering\ClientCamera.h" />
     <ClInclude Include="src\app\Constants.h" />
-    <ClInclude Include="src\app\Debug.h" />
+    <ClInclude Include="src\app\util\Debug.h" />
     <ClInclude Include="src\event\IEventSender.h" />
     <ClInclude Include="src\event\IWindowEventListener.h" />
     <ClInclude Include="src\rendering\IRenderable.h" />
@@ -189,17 +189,16 @@
     <ClInclude Include="src\app\scene\Scene.h" />
     <ClInclude Include="src\app\Window.h" />
     <ClInclude Include="src\rendering\Texture2D.h" />
-    <ClInclude Include="src\world\TexBlockDef.h" />
-    <ClInclude Include="src\world\BlockDef.h" />
-    <ClInclude Include="src\world\Blocks.h" />
+    <ClInclude Include="src\world\def\TexBlockDef.h" />
+    <ClInclude Include="src\world\def\BlockDef.h" />
+    <ClInclude Include="src\world\def\Blocks.h" />
     <ClInclude Include="src\world\BlockState.h" />
     <ClInclude Include="src\world\Chunk.h" />
-    <ClInclude Include="src\world\ChunkModel.h" />
+    <ClInclude Include="src\rendering\ChunkModel.h" />
     <ClInclude Include="src\world\Level.h" />
-    <ClInclude Include="src\world\OneTexBlockDef.h" />
-    <ClInclude Include="src\world\Side.h" />
+    <ClInclude Include="src\world\def\OneTexBlockDef.h" />
     <ClInclude Include="src\world\World.h" />
-    <ClInclude Include="src\world\WorldGenerator.h" />
+    <ClInclude Include="src\world\gen\WorldGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\fragment.glsl" />

@@ -45,7 +45,7 @@ void Model::render(Material& material, const glm::mat4& viewMatrix, const glm::m
 	material.setTransformMatricies(m_modelMatrix, viewMatrix, projectionMatrix);
 	material.use();
 	glBindVertexArray(m_vao);
-	glDrawElements(GL_TRIANGLES, m_mesh.indicies.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_mesh.indicies.size()), GL_UNSIGNED_INT, 0);
 }
 
 void Model::render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {

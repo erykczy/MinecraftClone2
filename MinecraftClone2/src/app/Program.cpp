@@ -1,9 +1,9 @@
 #include "Program.h"
 #include "src/app/Constants.h"
-#include "src/app/Debug.h"
+#include "src/app/util/Debug.h"
 #include "src/app/scene/GameScene.h"
-#include "src/app/Input.h"
-#include "src/app/Time.h"
+#include "src/app/util/Input.h"
+#include "src/app/util/Time.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <libraries/stb_image.h>

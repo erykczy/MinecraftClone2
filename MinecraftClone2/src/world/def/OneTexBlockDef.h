@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/world/BlockDef.h"
+#include "src/world/def/BlockDef.h"
 
 class OneTexBlockDef : public BlockDef {
 public:

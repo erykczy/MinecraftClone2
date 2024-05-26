@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/world/Blocks.h"
+#include "src/world/def/Blocks.h"
 
 class BlockDef;
 using t_id = unsigned short;

@@ -1,6 +1,6 @@
 #pragma once
 #include "Texture2D.h"
-#include "src/app/Debug.h"
+#include "src/app/util/Debug.h"
 #include <glad/glad.h>
 #include <libraries/stb_image.h>
 

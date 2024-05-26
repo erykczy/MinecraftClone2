@@ -1,16 +1,16 @@
 #pragma once
 #include "src/app/scene/Scene.h"
-#include "src/app/Debug.h"
-#include "src/app/Input.h"
-#include "src/app/Time.h"
+#include "src/app/util/Debug.h"
+#include "src/app/util/Input.h"
+#include "src/app/util/Time.h"
 #include "src/rendering/Model.h"
 #include "src/rendering/Material.h"
 #include "src/rendering/ClientCamera.h"
 #include "src/event/IWindowEventListener.h"
 #include "src/world/World.h"
-#include "src/world/WorldGenerator.h"
-#include "src/world/Blocks.h"
-#include "src/world/ChunkModel.h"
+#include "src/world/gen/WorldGenerator.h"
+#include "src/world/def/Blocks.h"
+#include "src/rendering/ChunkModel.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -21,6 +21,7 @@ public:
 	Material testMaterial{ "src/shaders/vertex.glsl", "src/shaders/fragment.glsl" };
 	//Model testModel{};
 	ClientCamera camera{};
+	Chunk* chunk{};
 
 	GameScene() {
 		Debug::logger << "Game Scene created!" << Debug::endDebug;
@@ -42,10 +43,10 @@ public:
 		Window::s_activeWindow->addListener(this);
 		Input::setCursorVisible(false);
 
-		auto& chunk{ world.overworld.addChunk(glm::ivec2{ 0, 0 }) };
-		WorldGenerator::generateChunk(chunk);
+		chunk = &world.overworld.addChunk(glm::ivec2{ 0, 0 });
+		WorldGenerator::generateChunk(*chunk);
 
-		chunkModel = std::make_unique<ChunkModel>(chunk, testMaterial);
+		chunkModel = std::make_unique<ChunkModel>(*chunk, testMaterial);
 	}
 
 	void render() {
@@ -78,7 +79,13 @@ public:
 		camera.yaw -= rotationSpeed * Time::getDeltaTime() * mouseDelta.x;
 		camera.pitch -= rotationSpeed * Time::getDeltaTime() * mouseDelta.y;
 
-
+		static int s_a = 0;
+		static int s_last = -1;
+		if (static_cast<int>(Time::getTime()) % 1 == 0 && s_last != static_cast<int>(Time::getTime())) {
+			s_a += 1;
+			s_last = static_cast<int>(Time::getTime());
+			chunk->setBlock(glm::vec3(10, 11+s_a, 10), Blocks::all[1]->getDefaultBlockState());
+		}
 		//testModel.setPosition(glm::vec3{ 0, 0, 5 });
 		//camera.renderModel(testModel);
 		camera.render(*chunkModel);

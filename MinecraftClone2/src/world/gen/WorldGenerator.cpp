@@ -1,6 +1,6 @@
 #include "WorldGenerator.h"
 #include "src/world/Chunk.h"
-#include "src/world/Blocks.h"
+#include "src/world/def/Blocks.h"
 
 void WorldGenerator::generateChunk(Chunk& chunk)
 {

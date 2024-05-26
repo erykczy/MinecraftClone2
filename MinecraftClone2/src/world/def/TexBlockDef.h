@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/world/BlockDef.h"
+#include "src/world/def/BlockDef.h"
 
 class TexBlockDef : public BlockDef {
 public:

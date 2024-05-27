@@ -27,8 +27,8 @@ private:
 
 	class Submodel final {
 	public:
-		std::vector<Vertex> vertices{};
-		std::vector<unsigned int> indicies{};
+		Vertex vertices[65536 * 8]{};
+		unsigned int indicies[65536 * 6 * 2]{};
 		unsigned int m_vao{};
 		unsigned int m_vbo{};
 		unsigned int m_ebo{};
@@ -38,12 +38,17 @@ private:
 		void render(Material& material, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
 		void updateVao();
 		void clear();
+		int addVertex(const Vertex& vertex);
+		int addIndex(unsigned int index);
+		Vertex& getVertex(int index) { return vertices[index]; }
 
-		static_assert(typeid(vertices) == typeid(std::vector<Vertex>));
-		int getSizeOfVertices() { return static_cast<int>(sizeof(Vertex) * vertices.size()); }
+		int getSizeOfVertices() { return static_cast<int>(sizeof(Vertex) * m_nextVertexIndex); }
+		int getSizeOfIndicies() { return static_cast<int>(sizeof(int) * m_nextIndexIndex); }
+		int getCountOfIndicies() { return m_nextIndexIndex; }
 
-		static_assert(typeid(indicies) == typeid(std::vector<unsigned int>));
-		int getSizeOfIndicies() { return static_cast<int>(sizeof(int) * indicies.size()); }
+	private:
+		int m_nextVertexIndex{};
+		int m_nextIndexIndex{};
 	};
 
 	Material& m_material;

@@ -5,13 +5,15 @@
 
 ChunkModel::ChunkModel(Chunk& chunk, Material& material) : m_chunk{ chunk }, m_material{ material } {
 	m_chunk.addListener(this);
+
+	// setup material
+	for (int i = 0; i < 6; ++i)
+		m_material.setTextureUnit(static_cast<std::string>("Texture[") + std::to_string(i) + ']', i);
+
 	generateSubmodels();
 }
 
 void ChunkModel::render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {
-	for(int i = 0; i < 6; ++i)
-		m_material.setTextureUnit(static_cast<std::string>("Texture[") + std::to_string(i) + ']', i);
-
 	for (int i = 0; i < m_submodels.size(); ++i) {
 		auto* blockState{ m_chunk.m_palette[i] };
 		auto blockId{ blockState->blockId };
@@ -59,23 +61,33 @@ void ChunkModel::Submodel::render(Material& material, const glm::mat4& viewMatri
 	material.setTransformMatricies(glm::mat4{ 1.0f }, viewMatrix, projectionMatrix);
 	material.use();
 	glBindVertexArray(m_vao);
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indicies.size()), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, getCountOfIndicies(), GL_UNSIGNED_INT, 0);
 }
 
 void ChunkModel::Submodel::updateVao() {
 	// vertices
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, getSizeOfVertices(), vertices.data(), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, getSizeOfVertices(), vertices, GL_DYNAMIC_DRAW);
 
 	// indicies
 	glBindBuffer(GL_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ARRAY_BUFFER, getSizeOfIndicies(), indicies.data(), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, getSizeOfIndicies(), indicies, GL_DYNAMIC_DRAW);
 
 }
 
 void ChunkModel::Submodel::clear() {
-	vertices.clear();
-	indicies.clear();
+	m_nextVertexIndex = 0;
+	m_nextIndexIndex = 0;
+}
+
+int ChunkModel::Submodel::addVertex(const Vertex& vertex) {
+	vertices[m_nextVertexIndex] = vertex;
+	return m_nextVertexIndex++;
+}
+
+int ChunkModel::Submodel::addIndex(unsigned int index) {
+	indicies[m_nextIndexIndex] = index;
+	return m_nextIndexIndex++;
 }
 
 void ChunkModel::generateSubmodels() {
@@ -174,29 +186,26 @@ void ChunkModel::addPlane(
 	float x4, float y4, float z4,
 	float normalX, float normalY, float normalZ
 ) {
-	unsigned int startIndex{ static_cast<unsigned int>(submodel.vertices.size()) };
-
 	// vertices
-	submodel.vertices.reserve(submodel.vertices.size() + 4);
-	auto& v0{ submodel.vertices.emplace_back(worldPos.x + x1, worldPos.y + y1, worldPos.z + z1, 0.0f, 0.0f, normalX, normalY, normalZ) };
-	auto& v1{ submodel.vertices.emplace_back(worldPos.x + x2, worldPos.y + y2, worldPos.z + z2, 1.0f, 0.0f, normalX, normalY, normalZ) };
-	auto& v2{ submodel.vertices.emplace_back(worldPos.x + x3, worldPos.y + y3, worldPos.z + z3, 1.0f, 1.0f, normalX, normalY, normalZ) };
-	auto& v3{ submodel.vertices.emplace_back(worldPos.x + x4, worldPos.y + y4, worldPos.z + z4, 0.0f, 1.0f, normalX, normalY, normalZ) };
+	auto startIndex{ submodel.addVertex(Vertex{ worldPos.x + x1, worldPos.y + y1, worldPos.z + z1, 0.0f, 0.0f, normalX, normalY, normalZ, 0.0f}) };
+	submodel.addVertex(Vertex{ worldPos.x + x2, worldPos.y + y2, worldPos.z + z2, 1.0f, 0.0f, normalX, normalY, normalZ, 0.0f });
+	submodel.addVertex(Vertex{ worldPos.x + x3, worldPos.y + y3, worldPos.z + z3, 1.0f, 1.0f, normalX, normalY, normalZ, 0.0f });
+	submodel.addVertex(Vertex{ worldPos.x + x4, worldPos.y + y4, worldPos.z + z4, 0.0f, 1.0f, normalX, normalY, normalZ, 0.0f });
 
 	// ambient occlusion
-	v0.ambientOcclusion = calculateAmbientOcclusion(worldPos, normalX, normalY, normalZ, v0, v1, v3);
+	/*v0.ambientOcclusion = calculateAmbientOcclusion(worldPos, normalX, normalY, normalZ, v0, v1, v3);
 	v1.ambientOcclusion = calculateAmbientOcclusion(worldPos, normalX, normalY, normalZ, v1, v2, v0);
 	v2.ambientOcclusion = calculateAmbientOcclusion(worldPos, normalX, normalY, normalZ, v2, v3, v1);
-	v3.ambientOcclusion = calculateAmbientOcclusion(worldPos, normalX, normalY, normalZ, v3, v0, v2);
+	v3.ambientOcclusion = calculateAmbientOcclusion(worldPos, normalX, normalY, normalZ, v3, v0, v2);*/
 
 	// indicies
-	submodel.indicies.push_back(startIndex + 0);
-	submodel.indicies.push_back(startIndex + 1);
-	submodel.indicies.push_back(startIndex + 2);
+	submodel.addIndex(startIndex + 0);
+	submodel.addIndex(startIndex + 1);
+	submodel.addIndex(startIndex + 2);
 
-	submodel.indicies.push_back(startIndex + 0);
-	submodel.indicies.push_back(startIndex + 2);
-	submodel.indicies.push_back(startIndex + 3);
+	submodel.addIndex(startIndex + 0);
+	submodel.addIndex(startIndex + 2);
+	submodel.addIndex(startIndex + 3);
 }
 
 float ChunkModel::calculateAmbientOcclusion(const glm::ivec3& worldPos, float normalX, float normalY, float normalZ, Vertex& vertex, Vertex& leftVertex, Vertex& rightVertex) {

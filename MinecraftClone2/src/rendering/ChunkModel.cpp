@@ -62,60 +62,66 @@ void ChunkModel::addBlock(ChunkSubmodel& submodel, intPosRef worldPos) {
 	posRef centerPos{ worldPos.x + 0.5f, worldPos.y + 0.5f, worldPos.z + 0.5f };
 
 	constexpr int m{ 1 };
-	addFace(
-		submodel,
-		worldPos, centerPos,
-		{ -m, -m, -m },
-		{ +m, -m, -m },
-		{ +m, +m, -m },
-		{ -m, +m, -m },
-		0.0f, 0.0f, -1.0f
-	); // front
-	addFace(
-		submodel,
-		worldPos, centerPos,
-		{ +m, -m, +m },
-		{ -m, -m, +m },
-		{ -m, +m, +m },
-		{ +m, +m, +m },
-		0.0f, 0.0f, 1.0f
-	); // back
-	addFace(
-		submodel,
-		worldPos, centerPos,
-		{ -m, -m, +m },
-		{ +m, -m, +m },
-		{ +m, -m, -m },
-		{ -m, -m, -m },
-		0.0f, -1.0f, 0.0f
-	); // down
-	addFace(
-		submodel,
-		worldPos, centerPos,
-		{ -m, +m, -m },
-		{ +m, +m, -m },
-		{ +m, +m, +m },
-		{ -m, +m, +m },
-		0.0f, 1.0f, 0.0f
-	); // up
-	addFace(
-		submodel,
-		worldPos, centerPos,
-		{ +m, -m, -m },
-		{ +m, -m, +m },
-		{ +m, +m, +m },
-		{ +m, +m, -m },
-		1.0f, 0.0f, 0.0f
-	); // right
-	addFace(
-		submodel,
-		worldPos, centerPos,
-		{ -m, -m, +m },
-		{ -m, -m, -m },
-		{ -m, +m, -m },
-		{ -m, +m, +m },
-		-1.0f, 0.0f, 0.0f
-	); // left
+	if (m_chunk.isEmpty(worldPos + glm::ivec3{ 0, 0, -1 }))
+		addFace(
+			submodel,
+			worldPos, centerPos,
+			{ -m, -m, -m },
+			{ +m, -m, -m },
+			{ +m, +m, -m },
+			{ -m, +m, -m },
+			0.0f, 0.0f, -1.0f
+		); // front
+	if (m_chunk.isEmpty(worldPos + glm::ivec3{ 0, 0, 1 }))
+		addFace(
+			submodel,
+			worldPos, centerPos,
+			{ +m, -m, +m },
+			{ -m, -m, +m },
+			{ -m, +m, +m },
+			{ +m, +m, +m },
+			0.0f, 0.0f, 1.0f
+		); // back
+	if (m_chunk.isEmpty(worldPos + glm::ivec3{ 0, -1, 0 }))
+		addFace(
+			submodel,
+			worldPos, centerPos,
+			{ -m, -m, +m },
+			{ +m, -m, +m },
+			{ +m, -m, -m },
+			{ -m, -m, -m },
+			0.0f, -1.0f, 0.0f
+		); // down
+	if (m_chunk.isEmpty(worldPos + glm::ivec3{ 0, 1, 0 }))
+		addFace(
+			submodel,
+			worldPos, centerPos,
+			{ -m, +m, -m },
+			{ +m, +m, -m },
+			{ +m, +m, +m },
+			{ -m, +m, +m },
+			0.0f, 1.0f, 0.0f
+		); // up
+	if (m_chunk.isEmpty(worldPos + glm::ivec3{ 1, 0, 0 }))
+		addFace(
+			submodel,
+			worldPos, centerPos,
+			{ +m, -m, -m },
+			{ +m, -m, +m },
+			{ +m, +m, +m },
+			{ +m, +m, -m },
+			1.0f, 0.0f, 0.0f
+		); // right
+	if (m_chunk.isEmpty(worldPos + glm::ivec3{ -1, 0, 0 }))
+		addFace(
+			submodel,
+			worldPos, centerPos,
+			{ -m, -m, +m },
+			{ -m, -m, -m },
+			{ -m, +m, -m },
+			{ -m, +m, +m },
+			-1.0f, 0.0f, 0.0f
+		); // left
 }
 
 void ChunkModel::addFace(
@@ -153,12 +159,9 @@ void ChunkModel::addFace(
 
 float ChunkModel::calculateAmbientOcclusion(intPosRef worldPos, intPosRef sideLeftRel, intPosRef sideRightRel, intPosRef cornerRel) {
 	// TODO do world checking, not chunk checking
-	auto* leftSide{ m_chunk.getBlock(worldPos + sideLeftRel) };
-	auto* rightSide{ m_chunk.getBlock(worldPos + sideRightRel) };
-	auto* corner{ m_chunk.getBlock(worldPos + cornerRel) };
-	bool isLeftSide{ leftSide && leftSide->blockId != 0 };
-	bool isRightSide{ rightSide && rightSide->blockId != 0 };
-	bool isCorner{ corner && corner->blockId != 0 };
+	bool isLeftSide{ !m_chunk.isEmpty(worldPos + sideLeftRel) };
+	bool isRightSide{ !m_chunk.isEmpty(worldPos + sideRightRel) };
+	bool isCorner{ !m_chunk.isEmpty(worldPos + cornerRel) };
 
 	if (isLeftSide && isRightSide)
 		return 1.0f;

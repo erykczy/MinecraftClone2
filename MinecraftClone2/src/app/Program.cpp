@@ -37,6 +37,7 @@ void Program::initializeOpenGl() {
 		Debug::logger << "Failed to initialize GLAD" << Debug::endFatalError;
 	}
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 }
 
 void Program::initializeLibraries()

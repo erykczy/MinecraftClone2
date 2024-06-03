@@ -24,3 +24,8 @@ BlockState* Chunk::getBlock(const glm::ivec3& pos) const {
 	if (relZ < 0 || relZ >= CHUNK_WIDTH) return nullptr;
 	return m_palette[m_blocks[pos.x][pos.y][pos.z]];
 }
+
+bool Chunk::isEmpty(const glm::ivec3 pos) const {
+	auto* state{ getBlock(pos) };
+	return !state || state->blockId == 0;
+}

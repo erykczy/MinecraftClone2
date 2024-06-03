@@ -21,6 +21,7 @@ public:
 	glm::ivec2 getPosition() const { return m_position; }
 
 	BlockState* getBlock(const glm::ivec3& pos) const;
+	bool isEmpty(const glm::ivec3 pos) const; // TODO temporary function, to delete
 
 	template<typename T>
 	void setBlock(const glm::ivec3& pos, const T& newBlockState);

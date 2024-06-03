@@ -4,6 +4,8 @@
 #include "src/event/IChunkEventListener.h"
 #include <vector>
 
+using intPosRef = const glm::ivec3&;
+using posRef = const glm::vec3&;
 class Material;
 class Chunk;
 
@@ -18,22 +20,23 @@ private:
 	Chunk& m_chunk;
 	std::vector<ChunkSubmodel> m_submodels{};
 
-	void onBlockChanged(const glm::ivec3& pos) override { generateSubmodels(); }
+	void onBlockChanged(intPosRef pos) override { generateSubmodels(); }
 
 	void generateSubmodels();
 
-	void addBlock(ChunkSubmodel& submodel, const glm::ivec3& worldPos);
+	void addBlock(ChunkSubmodel& submodel, intPosRef worldPos);
 
-	void addPlane(
+	void addFace(
 		ChunkSubmodel& submodel,
-		const glm::ivec3& worldPos,
-		float x1, float y1, float z1,
-		float x2, float y2, float z2,
-		float x3, float y3, float z3,
-		float x4, float y4, float z4,
+		intPosRef worldPos,
+		posRef centerPos,
+		intPosRef cornerRel0,
+		intPosRef cornerRel1,
+		intPosRef cornerRel2,
+		intPosRef cornerRel3,
 		float normalX, float normalY, float normalZ
 	);
 
-	float calculateAmbientOcclusion(const glm::ivec3& worldPos, float normalX, float normalY, float normalZ, Vertex& vertex, Vertex& leftVertex, Vertex& rightVertex);
+	float calculateAmbientOcclusion(intPosRef worldPos, intPosRef sideLeft, intPosRef sideRight, intPosRef corner);
 
 };

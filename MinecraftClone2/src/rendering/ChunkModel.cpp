@@ -57,88 +57,89 @@ void ChunkModel::generateSubmodels() {
 	}
 }
 
-void ChunkModel::addBlock(ChunkSubmodel& submodel, const glm::ivec3& worldPos) {
+void ChunkModel::addBlock(ChunkSubmodel& submodel, intPosRef worldPos) {
 	short blockState{ m_chunk.m_blocks[worldPos.x][worldPos.y][worldPos.z] };
+	posRef centerPos{ worldPos.x + 0.5f, worldPos.y + 0.5f, worldPos.z + 0.5f };
 
-	constexpr float m{ 0.5f };
-	addPlane(
+	constexpr int m{ 1 };
+	addFace(
 		submodel,
-		worldPos,
-		-m, -m, -m,
-		+m, -m, -m,
-		+m, +m, -m,
-		-m, +m, -m,
+		worldPos, centerPos,
+		{ -m, -m, -m },
+		{ +m, -m, -m },
+		{ +m, +m, -m },
+		{ -m, +m, -m },
 		0.0f, 0.0f, -1.0f
 	); // front
-	addPlane(
+	addFace(
 		submodel,
-		worldPos,
-		+m, -m, +m,
-		-m, -m, +m,
-		-m, +m, +m,
-		+m, +m, +m,
+		worldPos, centerPos,
+		{ +m, -m, +m },
+		{ -m, -m, +m },
+		{ -m, +m, +m },
+		{ +m, +m, +m },
 		0.0f, 0.0f, 1.0f
 	); // back
-	addPlane(
+	addFace(
 		submodel,
-		worldPos,
-		-m, -m, +m,
-		+m, -m, +m,
-		+m, -m, -m,
-		-m, -m, -m,
+		worldPos, centerPos,
+		{ -m, -m, +m },
+		{ +m, -m, +m },
+		{ +m, -m, -m },
+		{ -m, -m, -m },
 		0.0f, -1.0f, 0.0f
 	); // down
-	addPlane(
+	addFace(
 		submodel,
-		worldPos,
-		-m, +m, -m,
-		+m, +m, -m,
-		+m, +m, +m,
-		-m, +m, +m,
+		worldPos, centerPos,
+		{ -m, +m, -m },
+		{ +m, +m, -m },
+		{ +m, +m, +m },
+		{ -m, +m, +m },
 		0.0f, 1.0f, 0.0f
 	); // up
-	addPlane(
+	addFace(
 		submodel,
-		worldPos,
-		+m, -m, -m,
-		+m, -m, +m,
-		+m, +m, +m,
-		+m, +m, -m,
+		worldPos, centerPos,
+		{ +m, -m, -m },
+		{ +m, -m, +m },
+		{ +m, +m, +m },
+		{ +m, +m, -m },
 		1.0f, 0.0f, 0.0f
 	); // right
-	addPlane(
+	addFace(
 		submodel,
-		worldPos,
-		-m, -m, +m,
-		-m, -m, -m,
-		-m, +m, -m,
-		-m, +m, +m,
+		worldPos, centerPos,
+		{ -m, -m, +m },
+		{ -m, -m, -m },
+		{ -m, +m, -m },
+		{ -m, +m, +m },
 		-1.0f, 0.0f, 0.0f
 	); // left
 }
 
-void ChunkModel::addPlane(
+void ChunkModel::addFace(
 	ChunkSubmodel& submodel,
-	const glm::ivec3& worldPos,
-	float x1, float y1, float z1,
-	float x2, float y2, float z2,
-	float x3, float y3, float z3,
-	float x4, float y4, float z4,
+	intPosRef worldPos,
+	posRef centerPos,
+	intPosRef cornerRel0,
+	intPosRef cornerRel1,
+	intPosRef cornerRel2,
+	intPosRef cornerRel3,
 	float normalX, float normalY, float normalZ
 ) {
 	int startIndex{ submodel.getCountOfVertices() };
 
-	// vertices
-	auto& v0{ submodel.addVertex(Vertex{ worldPos.x + x1, worldPos.y + y1, worldPos.z + z1, 0.0f, 0.0f, normalX, normalY, normalZ, 0.0f}) };
-	auto& v1{ submodel.addVertex(Vertex{ worldPos.x + x2, worldPos.y + y2, worldPos.z + z2, 1.0f, 0.0f, normalX, normalY, normalZ, 0.0f }) };
-	auto& v2{ submodel.addVertex(Vertex{ worldPos.x + x3, worldPos.y + y3, worldPos.z + z3, 1.0f, 1.0f, normalX, normalY, normalZ, 0.0f }) };
-	auto& v3{ submodel.addVertex(Vertex{ worldPos.x + x4, worldPos.y + y4, worldPos.z + z4, 0.0f, 1.0f, normalX, normalY, normalZ, 0.0f }) };
+	glm::ivec3 sideRel0{ (cornerRel1 - cornerRel0) / 2 + cornerRel0 };
+	glm::ivec3 sideRel1{ (cornerRel2 - cornerRel1) / 2 + cornerRel1 };
+	glm::ivec3 sideRel2{ (cornerRel3 - cornerRel2) / 2 + cornerRel2 };
+	glm::ivec3 sideRel3{ (cornerRel0 - cornerRel3) / 2 + cornerRel3 };
 
-	// ambient occlusion TODO: optimize
-	/*v0.ambientOcclusion = calculateAmbientOcclusion(worldPos, normalX, normalY, normalZ, v0, v1, v3);
-	v1.ambientOcclusion = calculateAmbientOcclusion(worldPos, normalX, normalY, normalZ, v1, v2, v0);
-	v2.ambientOcclusion = calculateAmbientOcclusion(worldPos, normalX, normalY, normalZ, v2, v3, v1);
-	v3.ambientOcclusion = calculateAmbientOcclusion(worldPos, normalX, normalY, normalZ, v3, v0, v2);*/
+	// vertices
+	auto& v0{ submodel.addVertex(Vertex{ centerPos.x + cornerRel0.x / 2.0f, centerPos.y + cornerRel0.y / 2.0f, centerPos.z + cornerRel0.z / 2.0f, 0.0f, 0.0f, normalX, normalY, normalZ, calculateAmbientOcclusion(worldPos, sideRel0, sideRel3, cornerRel0) }) };
+	auto& v1{ submodel.addVertex(Vertex{ centerPos.x + cornerRel1.x / 2.0f, centerPos.y + cornerRel1.y / 2.0f, centerPos.z + cornerRel1.z / 2.0f, 1.0f, 0.0f, normalX, normalY, normalZ, calculateAmbientOcclusion(worldPos, sideRel1, sideRel0, cornerRel1) }) };
+	auto& v2{ submodel.addVertex(Vertex{ centerPos.x + cornerRel2.x / 2.0f, centerPos.y + cornerRel2.y / 2.0f, centerPos.z + cornerRel2.z / 2.0f, 1.0f, 1.0f, normalX, normalY, normalZ, calculateAmbientOcclusion(worldPos, sideRel2, sideRel1, cornerRel2) }) };
+	auto& v3{ submodel.addVertex(Vertex{ centerPos.x + cornerRel3.x / 2.0f, centerPos.y + cornerRel3.y / 2.0f, centerPos.z + cornerRel3.z / 2.0f, 0.0f, 1.0f, normalX, normalY, normalZ, calculateAmbientOcclusion(worldPos, sideRel3, sideRel2, cornerRel3) }) };
 
 	// indicies
 	submodel.addIndex(startIndex + 0);
@@ -150,13 +151,11 @@ void ChunkModel::addPlane(
 	submodel.addIndex(startIndex + 3);
 }
 
-float ChunkModel::calculateAmbientOcclusion(const glm::ivec3& worldPos, float normalX, float normalY, float normalZ, Vertex& vertex, Vertex& leftVertex, Vertex& rightVertex) {
-	glm::vec3 x{ glm::normalize(glm::vec3{vertex.x - leftVertex.x, vertex.y - leftVertex.y, vertex.z - leftVertex.z}) };
-	glm::vec3 z{ glm::normalize(glm::vec3{vertex.x - rightVertex.x, vertex.y - rightVertex.y, vertex.z - rightVertex.z}) };
-	glm::vec3 y{ normalX, normalY, normalZ };
-	auto* leftSide{ m_chunk.getBlock(glm::vec3{worldPos} + y + z) };
-	auto* rightSide{ m_chunk.getBlock(glm::vec3{worldPos} + y + x) };
-	auto* corner{ m_chunk.getBlock(glm::vec3{worldPos} + y + x + z) };
+float ChunkModel::calculateAmbientOcclusion(intPosRef worldPos, intPosRef sideLeftRel, intPosRef sideRightRel, intPosRef cornerRel) {
+	// TODO do world checking, not chunk checking
+	auto* leftSide{ m_chunk.getBlock(worldPos + sideLeftRel) };
+	auto* rightSide{ m_chunk.getBlock(worldPos + sideRightRel) };
+	auto* corner{ m_chunk.getBlock(worldPos + cornerRel) };
 	bool isLeftSide{ leftSide && leftSide->blockId != 0 };
 	bool isRightSide{ rightSide && rightSide->blockId != 0 };
 	bool isCorner{ corner && corner->blockId != 0 };

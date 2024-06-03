@@ -15,7 +15,7 @@ Chunk::~Chunk() {
 }
 
 BlockState* Chunk::getBlock(const glm::ivec3& pos) const {
-	// TODO check pos
+	// TODO bound checking slows performance
 	int relX{ pos.x - m_position.x };
 	int relY{ pos.y };
 	int relZ{ pos.z - m_position.y };

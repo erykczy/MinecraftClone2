@@ -1,6 +1,7 @@
 #pragma once
 
 #include "src/world/def/BlockDef.h"
+#include "src/rendering/Texture2D.h"
 
 class OneTexBlockDef : public BlockDef {
 public:

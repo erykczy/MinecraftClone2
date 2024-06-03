@@ -1,5 +1,6 @@
 #include "Chunk.h"
 #include "src/world/def/Blocks.h"
+#include "src/world/def/BlockDef.h"
 
 Chunk::Chunk(const glm::ivec2& pos) : m_position{ pos } {
 	auto* air{ new BlockState{ Blocks::all[0]->getDefaultBlockState()}};

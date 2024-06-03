@@ -156,6 +156,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\app\util\Time.cpp" />
     <ClCompile Include="src\app\util\Input.cpp" />
+    <ClCompile Include="src\rendering\ChunkSubmodel.cpp" />
     <ClCompile Include="src\rendering\ClientCamera.cpp" />
     <ClCompile Include="src\app\util\Debug.cpp" />
     <ClCompile Include="src\rendering\Material.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="src\app\Program.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
     <ClCompile Include="src\rendering\Texture2D.cpp" />
+    <ClCompile Include="src\world\BlockState.cpp" />
     <ClCompile Include="src\world\def\BlockDef.cpp" />
     <ClCompile Include="src\world\def\Blocks.cpp" />
     <ClCompile Include="src\world\Chunk.cpp" />
@@ -175,6 +177,7 @@
     <ClInclude Include="src\app\util\Time.h" />
     <ClInclude Include="src\app\util\Input.h" />
     <ClInclude Include="src\event\IChunkEventListener.h" />
+    <ClInclude Include="src\rendering\ChunkSubmodel.h" />
     <ClInclude Include="src\rendering\ClientCamera.h" />
     <ClInclude Include="src\app\Constants.h" />
     <ClInclude Include="src\app\util\Debug.h" />
@@ -189,6 +192,7 @@
     <ClInclude Include="src\app\scene\Scene.h" />
     <ClInclude Include="src\app\Window.h" />
     <ClInclude Include="src\rendering\Texture2D.h" />
+    <ClInclude Include="src\rendering\Vertex.h" />
     <ClInclude Include="src\world\def\TexBlockDef.h" />
     <ClInclude Include="src\world\def\BlockDef.h" />
     <ClInclude Include="src\world\def\Blocks.h" />

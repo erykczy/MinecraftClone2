@@ -1,9 +1,12 @@
 #include "Debug.h"
 
+#include "src/app/Constants.h"
 #include <iostream>
 #include <glad/glad.h>
 
 namespace Debug {
+	Logger::Logger() : m_numberPrecision{ Constants::defaultDebugNumberPrecision } {}
+
 	Logger& Logger::operator<<(DebugType type) {
 		if (type >= m_errorSensitivity) {
 			throw std::runtime_error{ getTag(type) + ": " + m_message.str()};

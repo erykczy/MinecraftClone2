@@ -1,7 +1,5 @@
 #pragma once
 
-#include "src/world/def/Blocks.h"
-
 class BlockDef;
 using t_id = unsigned short;
 
@@ -16,24 +14,15 @@ public:
 	BlockState(const BlockState& source) { copy(source); }
 	BlockState& operator=(const BlockState&) = delete;
 
-	bool operator==(const BlockState& state) const {
-		return isSame(state) && state.isSame(*this);
-	}
+	bool operator==(const BlockState& state) const { return isSame(state) && state.isSame(*this); }
 	
-	BlockDef* getBlockDef() const {
-		return Blocks::all[blockId];
-	}
+	BlockDef* getBlockDef() const;
 
 	friend class Chunk;
 
 protected:
-	virtual bool isSame(const BlockState& state) const {
-		return blockId == state.blockId;
-	}
-
-	virtual void copy(const BlockState& source) {
-		blockId = source.blockId;
-	}
+	virtual bool isSame(const BlockState& state) const { return blockId == state.blockId; }
+	virtual void copy(const BlockState& source) { blockId = source.blockId; }
 
 private:
 	unsigned short m_users{};

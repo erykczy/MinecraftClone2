@@ -1,6 +1,7 @@
 #pragma once
 
 #include "src/world/def/BlockDef.h"
+#include <string_view>
 
 class TexBlockDef : public BlockDef {
 public:

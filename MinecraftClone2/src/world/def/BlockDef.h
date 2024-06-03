@@ -1,8 +1,9 @@
 #pragma once
 
-#include "src/rendering/Texture2D.h"
+#include <string_view>
 
 class BlockState;
+class Texture2D;
 using t_id = unsigned short;
 
 class BlockDef {

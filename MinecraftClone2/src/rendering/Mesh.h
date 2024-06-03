@@ -1,7 +1,7 @@
 #pragma once
+#include "src/app/util/Debug.h"
 #include <vector>
 #include <cassert>
-#include "src/app/util/Debug.h"
 
 class Mesh final {
 public:

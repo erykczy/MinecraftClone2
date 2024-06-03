@@ -10,6 +10,7 @@
 #include "src/world/World.h"
 #include "src/world/gen/WorldGenerator.h"
 #include "src/world/def/Blocks.h"
+#include "src/world/def/BlockDef.h"
 #include "src/rendering/ChunkModel.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -19,13 +20,13 @@ public:
 	World world{};
 	std::unique_ptr<ChunkModel> chunkModel{};
 	Material testMaterial{ "src/shaders/vertex.glsl", "src/shaders/fragment.glsl" };
-	//Model testModel{};
+	Model testModel{};
 	ClientCamera camera{};
 	Chunk* chunk{};
 
 	GameScene() {
 		Debug::logger << "Game Scene created!" << Debug::endDebug;
-		Mesh mesh{
+		/*Mesh mesh{
 			{
 				-0.5f, -0.5f, 0.0f,
 				0.5f, -0.5f, 0.0f,
@@ -37,8 +38,8 @@ public:
 				0, 3, 2
 			}
 		};
-		//testModel.setMesh(mesh);
-		//testModel.setMaterial(&testMaterial);
+		testModel.setMesh(mesh);
+		testModel.setMaterial(&testMaterial);*/
 
 		Window::s_activeWindow->addListener(this);
 		Input::setCursorVisible(false);
@@ -79,7 +80,8 @@ public:
 		camera.yaw -= rotationSpeed * mouseDelta.x;
 		camera.pitch -= rotationSpeed * mouseDelta.y;
 
-		/*static float s_next = 0.0f;
+		// TODO: this is debug
+		static float s_next = 0.0f;
 		if (Time::getTime() > s_next) {
 			s_next += 0.1f;
 			for (int y = 0; y < 1; ++y) {
@@ -88,7 +90,7 @@ public:
 			for (int y = 0; y < 1; ++y) {
 				chunk->setBlock(glm::vec3(10, 11 + y, 10), Blocks::all[0]->getDefaultBlockState());
 			}
-		}*/
+		}
 
 		camera.render(*chunkModel);
 	}

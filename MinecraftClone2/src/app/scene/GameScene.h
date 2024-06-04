@@ -24,25 +24,8 @@ public:
 	ClientCamera camera{};
 	std::unique_ptr<LevelModel> levelModel{};
 
-	Model testModel{};
-	Chunk* chunk{};
-
 	GameScene() {
 		Debug::logger << "Game Scene created!" << Debug::endDebug;
-		/*Mesh mesh{
-			{
-				-0.5f, -0.5f, 0.0f,
-				0.5f, -0.5f, 0.0f,
-				0.5f, 0.5f, 0.0f,
-				-0.5f, 0.5f, 0.0f
-			},
-			{
-				0, 2, 1,
-				0, 3, 2
-			}
-		};
-		testModel.setMesh(mesh);
-		testModel.setMaterial(&testMaterial);*/
 
 		Window::s_activeWindow->addListener(this);
 		Input::setCursorVisible(false);
@@ -52,7 +35,7 @@ public:
 		constexpr int levelWidth{ 5 };
 		for (int x = 0; x < levelWidth; ++x) {
 			for (int z = 0; z < levelWidth; ++z) {
-				chunk = &world.overworld.addChunk(glm::ivec2{ x, z });
+				world.overworld.addChunk(glm::ivec2{ x, z });
 			}
 		}
 	}
@@ -62,6 +45,8 @@ public:
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		float speed{ 5.0f };
+		if (Input::isKeyDown(GLFW_KEY_ESCAPE))
+			Window::s_activeWindow->close();
 		if (Input::isKeyDown(GLFW_KEY_LEFT_SHIFT))
 			speed *= 2.0f;
 		if(Input::isKeyDown(GLFW_KEY_W))
@@ -86,18 +71,6 @@ public:
 		float rotationSpeed{ 0.05f };
 		camera.yaw -= rotationSpeed * mouseDelta.x;
 		camera.pitch -= rotationSpeed * mouseDelta.y;
-
-		// TODO: this is debug
-		static float s_next = 0.0f;
-		if (Time::getTime() > s_next) {
-			s_next += 0.1f;
-			for (int y = 0; y < 1; ++y) {
-				chunk->setBlockWithin(glm::vec3(10, 11 + y, 10), Blocks::all[1]->getDefaultBlockState());
-			}
-			for (int y = 0; y < 1; ++y) {
-				chunk->setBlockWithin(glm::vec3(10, 11 + y, 10), Blocks::all[0]->getDefaultBlockState());
-			}
-		}
 
 		camera.render(*levelModel);
 	}

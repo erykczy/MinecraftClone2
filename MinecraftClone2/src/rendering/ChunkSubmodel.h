@@ -27,6 +27,6 @@ public:
 
 	int getSizeOfVertices() const { return static_cast<int>(sizeof(Vertex) * getCountOfVertices()); }
 	int getSizeOfIndicies() const { return static_cast<int>(sizeof(unsigned int) * getCountOfIndicies()); }
-	int getCountOfIndicies() const { return indicies.size(); }
-	int getCountOfVertices() const { return vertices.size(); }
+	int getCountOfIndicies() const { return static_cast<int>(indicies.size()); }
+	int getCountOfVertices() const { return static_cast<int>(vertices.size()); }
 };

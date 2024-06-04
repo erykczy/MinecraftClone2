@@ -1,11 +1,9 @@
 #include "ChunkSubmodel.h"
 #include "src/rendering/Material.h"
+#include "src/world/Chunk.h"
 #include <glad/glad.h>
 
 ChunkSubmodel::ChunkSubmodel() {
-	vertices = new Vertex[65536 * 8];
-	indicies = new unsigned int[65536 * 6 * 2];
-
 	glGenVertexArrays(1, &m_vao);
 	glGenBuffers(1, &m_vbo);
 	glGenBuffers(1, &m_ebo);
@@ -36,8 +34,9 @@ ChunkSubmodel::ChunkSubmodel() {
 
 ChunkSubmodel::~ChunkSubmodel()
 {
-	delete[] vertices;
-	delete[] indicies;
+	glDeleteVertexArrays(1, &m_vao);
+	glDeleteBuffers(1, &m_vbo);
+	glDeleteBuffers(1, &m_ebo);
 }
 
 void ChunkSubmodel::render(Material& material, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix)
@@ -51,22 +50,38 @@ void ChunkSubmodel::render(Material& material, const glm::mat4& viewMatrix, cons
 void ChunkSubmodel::updateVao() {
 	// vertices
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, getSizeOfVertices(), vertices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, getSizeOfVertices(), vertices.data(), GL_DYNAMIC_DRAW);
 
 	// indicies
 	glBindBuffer(GL_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ARRAY_BUFFER, getSizeOfIndicies(), indicies, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, getSizeOfIndicies(), indicies.data(), GL_DYNAMIC_DRAW);
 }
 
 void ChunkSubmodel::clear() {
-	m_nextVertexIndex = 0;
-	m_nextIndexIndex = 0;
+	vertices.clear();
+	indicies.clear();
+}
+
+void ChunkSubmodel::startWriting()
+{
+	clear();
+	vertices.reserve(CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_WIDTH * 6 * 4);
+	indicies.reserve(CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_WIDTH * 6 * 2);
+}
+
+void ChunkSubmodel::stopWriting()
+{
+	vertices.shrink_to_fit();
+	indicies.shrink_to_fit();
+	updateVao();
 }
 
 Vertex& ChunkSubmodel::addVertex(const Vertex& vertex) {
-	return vertices[m_nextVertexIndex++] = vertex;
+	vertices.push_back(vertex);
+	return vertices.back();
 }
 
 unsigned int ChunkSubmodel::addIndex(unsigned int index) {
-	return indicies[m_nextIndexIndex++] = index;
+	indicies.push_back(index);
+	return indicies.back();
 }

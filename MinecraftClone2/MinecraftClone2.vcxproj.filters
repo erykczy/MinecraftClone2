@@ -75,6 +75,9 @@
     <ClCompile Include="src\world\gen\BasicLevelGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\rendering\LevelModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\Program.h">
@@ -168,6 +171,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\world\gen\BasicLevelGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rendering\LevelModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\ILevelEventListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

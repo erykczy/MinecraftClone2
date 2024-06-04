@@ -16,7 +16,7 @@ inline constexpr int CHUNK_HEIGHT = 256;
 
 class Chunk final : public IEventSender<IChunkEventListener> {
 public:
-	Chunk();
+	Chunk() = default;
 	Chunk(Level* level, const glm::ivec2& pos);
 
 	~Chunk();
@@ -40,6 +40,7 @@ private:
 
 template<typename T>
 void Chunk::setBlockWithin(const glm::ivec3& relPos, const T& newBlockState) {
+	glm::ivec3 worldPos{ relPos.x + m_position.x * CHUNK_WIDTH, relPos.y, relPos.z + m_position.y * CHUNK_WIDTH };
 	if (relPos.y < 0 && relPos.y >= CHUNK_HEIGHT) {
 		Debug::logger << "Position outside the chunk" << Debug::endError;
 		return;
@@ -96,5 +97,5 @@ void Chunk::setBlockWithin(const glm::ivec3& relPos, const T& newBlockState) {
 	}
 	// set pointer
 	m_blocks[relPos.x][relPos.y][relPos.z] = static_cast<unsigned short>(index);
-	notifyListeners([&relPos](IChunkEventListener* listener) { listener->onBlockChanged(relPos); });
+	notifyListeners([this, &worldPos](IChunkEventListener* listener) { listener->onBlockChanged(*this, worldPos); });
 }

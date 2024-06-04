@@ -7,5 +7,5 @@ class IChunkEventListener {
 public:
 	virtual ~IChunkEventListener() = default;
 
-	virtual void onBlockChanged(const glm::ivec3& relPos) {}
+	virtual void onBlockChanged(Chunk& chunk, const glm::ivec3& blockPos) {}
 };

@@ -4,6 +4,7 @@
 Chunk& Level::addChunk(const glm::ivec2& pos) {
 	auto& chunk{ m_chunks.try_emplace(pos, this, pos).first->second };
 	levelGenerator->generateChunk(chunk);
+	notifyListeners([this, &chunk](ILevelEventListener* listener) { listener->onChunkAdded(*this, chunk); });
 	return chunk;
 }
 

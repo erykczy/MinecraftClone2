@@ -2,11 +2,6 @@
 #include "src/world/def/Blocks.h"
 #include "src/world/def/BlockDef.h"
 
-Chunk::Chunk()
-{
-
-}
-
 Chunk::Chunk(Level* level, const glm::ivec2& pos) : m_level{ level }, m_position { pos } {
 	auto* air{ new BlockState{ Blocks::all[0]->getDefaultBlockState()}};
 	air->m_users = CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_WIDTH - 1;

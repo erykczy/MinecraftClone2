@@ -1,5 +1,6 @@
 #pragma once
 #include "src/world/Chunk.h"
+#include "src/event/ILevelEventListener.h"
 #include <unordered_map>
 #include <memory>
 
@@ -14,7 +15,7 @@ struct IVec2Hash
     }
 };
 
-class Level final {
+class Level final : public IEventSender<ILevelEventListener> {
 public:
     LevelGenerator* levelGenerator{};
 
@@ -36,5 +37,6 @@ private:
 
 template<typename T>
 void Level::setBlock(const glm::ivec3& pos, const T& newBlockState) {
-    getChunkOfBlock(pos, true)->setBlockWithin(levelSpaceToChunkSpace(pos), newBlockState);
+    auto& chunk{ *getChunkOfBlock(pos, true) };
+    chunk.setBlockWithin(levelSpaceToChunkSpace(pos), newBlockState);
 }

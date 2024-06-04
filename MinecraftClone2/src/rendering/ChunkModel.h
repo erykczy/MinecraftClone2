@@ -12,19 +12,20 @@ class Material;
 
 class ChunkModel final : public IRenderable, private IChunkEventListener {
 public:
-	ChunkModel(Chunk& chunk, Material& material);
+	ChunkModel();
+	ChunkModel(Chunk* chunk, Material* material);
 
 	void render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) override;
 
+	void update();
+
 private:
-	Material& m_material;
-	Level& m_level;
-	Chunk& m_chunk;
+	Material* m_material{};
+	Level* m_level{};
+	Chunk* m_chunk{};
 	std::vector<ChunkSubmodel> m_submodels{};
 
-	void onBlockChanged(intPosRef relPos) override { generateSubmodels(); }
-
-	void generateSubmodels();
+	void onBlockChanged(Chunk& chunk, intPosRef blockPos) override { update(); }
 
 	void addBlock(ChunkSubmodel& submodel, intPosRef worldPos);
 

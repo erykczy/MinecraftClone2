@@ -6,12 +6,13 @@
 #include "src/rendering/Model.h"
 #include "src/rendering/Material.h"
 #include "src/rendering/ClientCamera.h"
-#include "src/event/IWindowEventListener.h"
+#include "src/rendering/ChunkModel.h"
+#include "src/rendering/LevelModel.h"
 #include "src/world/World.h"
 #include "src/world/gen/BasicLevelGenerator.h"
 #include "src/world/def/Blocks.h"
 #include "src/world/def/BlockDef.h"
-#include "src/rendering/ChunkModel.h"
+#include "src/event/IWindowEventListener.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -21,7 +22,7 @@ public:
 	World world{ &overworldGenerator };
 	Material chunkMaterial{ "src/shaders/vertex.glsl", "src/shaders/fragment.glsl" };
 	ClientCamera camera{};
-	std::unique_ptr<ChunkModel> chunkModel{};
+	std::unique_ptr<LevelModel> levelModel{};
 
 	Model testModel{};
 	Chunk* chunk{};
@@ -46,9 +47,14 @@ public:
 		Window::s_activeWindow->addListener(this);
 		Input::setCursorVisible(false);
 
-		chunk = &world.overworld.addChunk(glm::ivec2{ 0, 0 });
+		levelModel = std::make_unique<LevelModel>(world.overworld, chunkMaterial);
 
-		chunkModel = std::make_unique<ChunkModel>(*chunk, chunkMaterial);
+		constexpr int levelWidth{ 5 };
+		for (int x = 0; x < levelWidth; ++x) {
+			for (int z = 0; z < levelWidth; ++z) {
+				chunk = &world.overworld.addChunk(glm::ivec2{ x, z });
+			}
+		}
 	}
 
 	void render() {
@@ -93,7 +99,7 @@ public:
 			}
 		}
 
-		camera.render(*chunkModel);
+		camera.render(*levelModel);
 	}
 
 private:

@@ -159,6 +159,7 @@
     <ClCompile Include="src\rendering\ChunkSubmodel.cpp" />
     <ClCompile Include="src\rendering\ClientCamera.cpp" />
     <ClCompile Include="src\app\util\Debug.cpp" />
+    <ClCompile Include="src\rendering\LevelModel.cpp" />
     <ClCompile Include="src\rendering\Material.cpp" />
     <ClCompile Include="src\rendering\Model.cpp" />
     <ClCompile Include="src\app\Program.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="src\app\util\Time.h" />
     <ClInclude Include="src\app\util\Input.h" />
     <ClInclude Include="src\event\IChunkEventListener.h" />
+    <ClInclude Include="src\event\ILevelEventListener.h" />
     <ClInclude Include="src\rendering\ChunkSubmodel.h" />
     <ClInclude Include="src\rendering\ClientCamera.h" />
     <ClInclude Include="src\app\Constants.h" />
@@ -184,6 +186,7 @@
     <ClInclude Include="src\event\IEventSender.h" />
     <ClInclude Include="src\event\IWindowEventListener.h" />
     <ClInclude Include="src\rendering\IRenderable.h" />
+    <ClInclude Include="src\rendering\LevelModel.h" />
     <ClInclude Include="src\rendering\Material.h" />
     <ClInclude Include="src\rendering\Mesh.h" />
     <ClInclude Include="src\rendering\Model.h" />

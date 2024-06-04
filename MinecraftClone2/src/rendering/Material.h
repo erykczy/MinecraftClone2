@@ -21,6 +21,7 @@ public:
 	void setVector4(std::string_view uniformName, const glm::vec4& vec);
 	void setFloat(std::string_view uniformName, float value);
 	void setInt(std::string_view uniformName, int value);
+	void setTextureUnit(std::string_view uniformName, int textureUnit);
 
 	void use() const;
 

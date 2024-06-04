@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Constants.h"
-
 #include <sstream>
 #include <iomanip>
 #include <glm/vec2.hpp>
@@ -18,6 +16,8 @@ namespace Debug {
 	
 	class Logger final {
 	public:
+		Logger();
+
 		template<typename T>
 		Logger& operator<<(const T& data);
 		Logger& operator<<(DebugType type);
@@ -32,7 +32,7 @@ namespace Debug {
 		DebugType m_debugSensitivity{ endDebug };
 		DebugType m_errorSensitivity{ endFatalError };
 		std::stringstream m_message{};
-		int m_numberPrecision{ Constants::defaultDebugNumberPrecision };
+		int m_numberPrecision{};
 
 		std::string getTag(DebugType type);
 	};

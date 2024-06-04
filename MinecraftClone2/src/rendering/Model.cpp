@@ -18,6 +18,8 @@ Model::Model() {
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	updateModelMatrix();
 }
 
 Model::~Model() {
@@ -39,15 +41,19 @@ void Model::setMesh(const Mesh& mesh)
 	glBufferData(GL_ARRAY_BUFFER, m_mesh.getSizeOfIndicies(), m_mesh.indicies.data(), GL_DYNAMIC_DRAW);
 }
 
-void Model::render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) const {
+void Model::render(Material& material, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {
+	material.setTransformMatricies(m_modelMatrix, viewMatrix, projectionMatrix);
+	material.use();
+	glBindVertexArray(m_vao);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_mesh.indicies.size()), GL_UNSIGNED_INT, 0);
+}
+
+void Model::render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {
 	if (!m_material) {
 		Debug::logger << "Material is nullptr!" << Debug::endError;
 		return;
 	}
-	m_material->setTransformMatricies(m_modelMatrix, viewMatrix, projectionMatrix);
-	m_material->use();
-	glBindVertexArray(m_vao);
-	glDrawElements(GL_TRIANGLES, m_mesh.indicies.size(), GL_UNSIGNED_INT, 0);
+	render(*m_material, viewMatrix, projectionMatrix);
 }
 
 void Model::setPosition(const glm::vec3& value) {

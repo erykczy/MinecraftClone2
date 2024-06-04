@@ -1,14 +1,14 @@
 #include "ClientCamera.h"
-#include "src/app/Debug.h"
-#include "src/rendering/Model.h"
+#include "src/app/util/Debug.h"
+#include "src/rendering/IRenderable.h"
 #include <glm/ext/matrix_transform.hpp>
 
 ClientCamera::ClientCamera() {
 	updateProjectionMatrix();
 }
 
-void ClientCamera::renderModel(const Model& model) const {
-	model.render(createViewMatrix(), getProjectionMatrix());
+void ClientCamera::render(IRenderable& renderable) const {
+	renderable.render(createViewMatrix(), getProjectionMatrix());
 }
 
 glm::mat4 ClientCamera::createViewMatrix() const

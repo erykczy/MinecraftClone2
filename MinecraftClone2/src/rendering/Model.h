@@ -1,16 +1,18 @@
 #pragma once
 #include "src/rendering/Mesh.h"
+#include "src/rendering/IRenderable.h"
 #include <glm/ext/matrix_transform.hpp>
 
 class ClientCamera;
 class Material;
 
-class Model final {
+class Model final : public IRenderable {
 public:
 	Model();
 	~Model();
 
-	void render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) const;
+	void render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) override;
+	void render(Material& material, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
 
 	void setMesh(const Mesh& mesh);
 	const Mesh& getMesh() { return m_mesh; }

@@ -6,8 +6,9 @@
 
 using intPosRef = const glm::ivec3&;
 using posRef = const glm::vec3&;
-class Material;
+class Level;
 class Chunk;
+class Material;
 
 class ChunkModel final : public IRenderable, private IChunkEventListener {
 public:
@@ -17,10 +18,11 @@ public:
 
 private:
 	Material& m_material;
+	Level& m_level;
 	Chunk& m_chunk;
 	std::vector<ChunkSubmodel> m_submodels{};
 
-	void onBlockChanged(intPosRef pos) override { generateSubmodels(); }
+	void onBlockChanged(intPosRef relPos) override { generateSubmodels(); }
 
 	void generateSubmodels();
 

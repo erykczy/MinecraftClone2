@@ -1,8 +1,7 @@
 #pragma once
 
+#include "src/world/def/BlockDef.h"
 #include <vector>
-
-class BlockDef;
 
 namespace Blocks {
 	extern std::vector<BlockDef*> all;

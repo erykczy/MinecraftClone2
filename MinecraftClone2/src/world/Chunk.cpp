@@ -2,7 +2,12 @@
 #include "src/world/def/Blocks.h"
 #include "src/world/def/BlockDef.h"
 
-Chunk::Chunk(const glm::ivec2& pos) : m_position{ pos } {
+Chunk::Chunk()
+{
+
+}
+
+Chunk::Chunk(Level* level, const glm::ivec2& pos) : m_level{ level }, m_position { pos } {
 	auto* air{ new BlockState{ Blocks::all[0]->getDefaultBlockState()}};
 	air->m_users = CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_WIDTH - 1;
 	m_palette.push_back(air);
@@ -14,18 +19,7 @@ Chunk::~Chunk() {
 	}
 }
 
-BlockState* Chunk::getBlock(const glm::ivec3& pos) const {
-	// TODO bound checking slows performance
-	int relX{ pos.x - m_position.x };
-	int relY{ pos.y };
-	int relZ{ pos.z - m_position.y };
-	if (relX < 0 || relX >= CHUNK_WIDTH) return nullptr;
-	if (relY < 0 || relY >= CHUNK_HEIGHT) return nullptr;
-	if (relZ < 0 || relZ >= CHUNK_WIDTH) return nullptr;
-	return m_palette[m_blocks[pos.x][pos.y][pos.z]];
-}
-
-bool Chunk::isEmpty(const glm::ivec3 pos) const {
-	auto* state{ getBlock(pos) };
-	return !state || state->blockId == 0;
+BlockState* Chunk::getBlockWithin(const glm::ivec3& relPos) const {
+	if (relPos.y < 0 || relPos.y >= CHUNK_HEIGHT) return nullptr;
+	return m_palette[m_blocks[relPos.x][relPos.y][relPos.z]];
 }

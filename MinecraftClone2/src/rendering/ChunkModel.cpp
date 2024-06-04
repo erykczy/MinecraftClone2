@@ -2,11 +2,12 @@
 #include "src/world/def/Blocks.h"
 #include "src/rendering/Material.h"
 #include "src/world/Chunk.h"
+#include "src/world/Level.h"
 #include "src/world/def/BlockDef.h"
 #include "src/rendering/Texture2D.h"
 #include <glad/glad.h>
 
-ChunkModel::ChunkModel(Chunk& chunk, Material& material) : m_chunk{ chunk }, m_material{ material } {
+ChunkModel::ChunkModel(Chunk& chunk, Material& material) : m_chunk{ chunk }, m_level{ *chunk.getLevel() }, m_material{material} {
 	m_chunk.addListener(this);
 
 	// setup material
@@ -39,15 +40,15 @@ void ChunkModel::generateSubmodels() {
 		submodel.clear();
 	}
 
-	int chunkX{ m_chunk.getPosition().x };
-	int chunkZ{ m_chunk.getPosition().y };
+	int chunkBlockX{ m_chunk.getPosition().x * 16 };
+	int chunkBlockZ{ m_chunk.getPosition().y * 16 };
 
 	for (int x{ 0 }; x < CHUNK_WIDTH; ++x) {
 		for (int z{ 0 }; z < CHUNK_WIDTH; ++z) {
 			for (int y{ 0 }; y < CHUNK_HEIGHT; ++y) {
 				if (m_chunk.m_palette[m_chunk.m_blocks[x][y][z]]->getBlockDef()->getRenderingType() == BlockDef::RenderingType::NONE)
 					continue;
-				addBlock(m_submodels[m_chunk.m_blocks[x][y][z]], glm::ivec3{ chunkX + x, y, chunkZ + z });
+				addBlock(m_submodels[m_chunk.m_blocks[x][y][z]], glm::ivec3{ chunkBlockX + x, y, chunkBlockZ + z });
 			}
 		}
 	}
@@ -58,11 +59,10 @@ void ChunkModel::generateSubmodels() {
 }
 
 void ChunkModel::addBlock(ChunkSubmodel& submodel, intPosRef worldPos) {
-	short blockState{ m_chunk.m_blocks[worldPos.x][worldPos.y][worldPos.z] };
 	posRef centerPos{ worldPos.x + 0.5f, worldPos.y + 0.5f, worldPos.z + 0.5f };
 
 	constexpr int m{ 1 };
-	if (m_chunk.isEmpty(worldPos + glm::ivec3{ 0, 0, -1 }))
+	if (m_level.isAir(worldPos + glm::ivec3{ 0, 0, -1 }, false))
 		addFace(
 			submodel,
 			worldPos, centerPos,
@@ -72,7 +72,7 @@ void ChunkModel::addBlock(ChunkSubmodel& submodel, intPosRef worldPos) {
 			{ -m, +m, -m },
 			0.0f, 0.0f, -1.0f
 		); // front
-	if (m_chunk.isEmpty(worldPos + glm::ivec3{ 0, 0, 1 }))
+	if (m_level.isAir(worldPos + glm::ivec3{ 0, 0, 1 }, false))
 		addFace(
 			submodel,
 			worldPos, centerPos,
@@ -82,7 +82,7 @@ void ChunkModel::addBlock(ChunkSubmodel& submodel, intPosRef worldPos) {
 			{ +m, +m, +m },
 			0.0f, 0.0f, 1.0f
 		); // back
-	if (m_chunk.isEmpty(worldPos + glm::ivec3{ 0, -1, 0 }))
+	if (m_level.isAir(worldPos + glm::ivec3{ 0, -1, 0 }, false))
 		addFace(
 			submodel,
 			worldPos, centerPos,
@@ -92,7 +92,7 @@ void ChunkModel::addBlock(ChunkSubmodel& submodel, intPosRef worldPos) {
 			{ -m, -m, -m },
 			0.0f, -1.0f, 0.0f
 		); // down
-	if (m_chunk.isEmpty(worldPos + glm::ivec3{ 0, 1, 0 }))
+	if (m_level.isAir(worldPos + glm::ivec3{ 0, 1, 0 }, false))
 		addFace(
 			submodel,
 			worldPos, centerPos,
@@ -102,7 +102,7 @@ void ChunkModel::addBlock(ChunkSubmodel& submodel, intPosRef worldPos) {
 			{ -m, +m, +m },
 			0.0f, 1.0f, 0.0f
 		); // up
-	if (m_chunk.isEmpty(worldPos + glm::ivec3{ 1, 0, 0 }))
+	if (m_level.isAir(worldPos + glm::ivec3{ 1, 0, 0 }, false))
 		addFace(
 			submodel,
 			worldPos, centerPos,
@@ -112,7 +112,7 @@ void ChunkModel::addBlock(ChunkSubmodel& submodel, intPosRef worldPos) {
 			{ +m, +m, -m },
 			1.0f, 0.0f, 0.0f
 		); // right
-	if (m_chunk.isEmpty(worldPos + glm::ivec3{ -1, 0, 0 }))
+	if (m_level.isAir(worldPos + glm::ivec3{ -1, 0, 0 }, false))
 		addFace(
 			submodel,
 			worldPos, centerPos,
@@ -158,10 +158,9 @@ void ChunkModel::addFace(
 }
 
 float ChunkModel::calculateAmbientOcclusion(intPosRef worldPos, intPosRef sideLeftRel, intPosRef sideRightRel, intPosRef cornerRel) {
-	// TODO do world checking, not chunk checking
-	bool isLeftSide{ !m_chunk.isEmpty(worldPos + sideLeftRel) };
-	bool isRightSide{ !m_chunk.isEmpty(worldPos + sideRightRel) };
-	bool isCorner{ !m_chunk.isEmpty(worldPos + cornerRel) };
+	bool isLeftSide{ !m_level.isAir(worldPos + sideLeftRel, false) };
+	bool isRightSide{ !m_level.isAir(worldPos + sideRightRel, false) };
+	bool isCorner{ !m_level.isAir(worldPos + cornerRel, false) };
 
 	if (isLeftSide && isRightSide)
 		return 1.0f;

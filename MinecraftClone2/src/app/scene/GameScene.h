@@ -8,7 +8,7 @@
 #include "src/rendering/ClientCamera.h"
 #include "src/event/IWindowEventListener.h"
 #include "src/world/World.h"
-#include "src/world/gen/WorldGenerator.h"
+#include "src/world/gen/BasicLevelGenerator.h"
 #include "src/world/def/Blocks.h"
 #include "src/world/def/BlockDef.h"
 #include "src/rendering/ChunkModel.h"
@@ -17,11 +17,13 @@
 
 class GameScene final : public Scene, private IWindowEventListener {
 public:
-	World world{};
-	std::unique_ptr<ChunkModel> chunkModel{};
-	Material testMaterial{ "src/shaders/vertex.glsl", "src/shaders/fragment.glsl" };
-	Model testModel{};
+	BasicLevelGenerator overworldGenerator{};
+	World world{ &overworldGenerator };
+	Material chunkMaterial{ "src/shaders/vertex.glsl", "src/shaders/fragment.glsl" };
 	ClientCamera camera{};
+	std::unique_ptr<ChunkModel> chunkModel{};
+
+	Model testModel{};
 	Chunk* chunk{};
 
 	GameScene() {
@@ -45,9 +47,8 @@ public:
 		Input::setCursorVisible(false);
 
 		chunk = &world.overworld.addChunk(glm::ivec2{ 0, 0 });
-		WorldGenerator::generateChunk(*chunk);
 
-		chunkModel = std::make_unique<ChunkModel>(*chunk, testMaterial);
+		chunkModel = std::make_unique<ChunkModel>(*chunk, chunkMaterial);
 	}
 
 	void render() {
@@ -85,10 +86,10 @@ public:
 		if (Time::getTime() > s_next) {
 			s_next += 0.1f;
 			for (int y = 0; y < 1; ++y) {
-				chunk->setBlock(glm::vec3(10, 11 + y, 10), Blocks::all[1]->getDefaultBlockState());
+				chunk->setBlockWithin(glm::vec3(10, 11 + y, 10), Blocks::all[1]->getDefaultBlockState());
 			}
 			for (int y = 0; y < 1; ++y) {
-				chunk->setBlock(glm::vec3(10, 11 + y, 10), Blocks::all[0]->getDefaultBlockState());
+				chunk->setBlockWithin(glm::vec3(10, 11 + y, 10), Blocks::all[0]->getDefaultBlockState());
 			}
 		}
 

@@ -3,5 +3,7 @@
 
 class World {
 public:
-	Level overworld{};
+	World(LevelGenerator* overworldGenerator) : overworld{ overworldGenerator } {}
+
+	Level overworld;
 };

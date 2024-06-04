@@ -169,8 +169,8 @@
     <ClCompile Include="src\world\def\Blocks.cpp" />
     <ClCompile Include="src\world\Chunk.cpp" />
     <ClCompile Include="src\rendering\ChunkModel.cpp" />
+    <ClCompile Include="src\world\gen\BasicLevelGenerator.cpp" />
     <ClCompile Include="src\world\Level.cpp" />
-    <ClCompile Include="src\world\gen\WorldGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\stb_image.h" />
@@ -199,10 +199,11 @@
     <ClInclude Include="src\world\BlockState.h" />
     <ClInclude Include="src\world\Chunk.h" />
     <ClInclude Include="src\rendering\ChunkModel.h" />
+    <ClInclude Include="src\world\gen\BasicLevelGenerator.h" />
     <ClInclude Include="src\world\Level.h" />
     <ClInclude Include="src\world\def\OneTexBlockDef.h" />
     <ClInclude Include="src\world\World.h" />
-    <ClInclude Include="src\world\gen\WorldGenerator.h" />
+    <ClInclude Include="src\world\gen\LevelGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\fragment.glsl" />
